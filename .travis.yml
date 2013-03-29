@@ -1,0 +1,23 @@
+language: java
+jdk:
+  - openjdk6
+  - openjdk7
+  - oraclejdk7
+before_script:
+  - 'wget -P acota-core http://156.35.82.101:7000/downloads/acota/utils/travis/core/acota.properties'
+  - 'wget -P acota-feedback http://156.35.82.101:7000/downloads/acota/utils/travis/feedback/acota.properties'
+  - 'wget http://156.35.82.101:7000/downloads/acota/utils/open_nlp.zip'
+  - 'wget http://156.35.82.101:7000/downloads/acota/utils/travis/sql/acota.sql'
+  - 'wget http://wordnetcode.princeton.edu/3.0/WNdb-3.0.tar.gz'
+  - 'unzip open_nlp.zip'
+  - 'tar -xzf WNdb-3.0.tar.gz'
+  - mysql --user="root" --password="" -e 'SET GLOBAL time_zone = "+00:00";'
+  - mysql -e 'create database acota;'
+  - mysql --user="root" --password="" acota < acota.sql
+script: 
+  - mvn -Duser.timezone=GMT -f acota-core/pom.xml install test
+  - mvn -Duser.timezone=GMT -f acota-feedback/pom.xml install test
+  - mvn -Duser.timezone=GMT -f acota-examples/pom.xml install test
+notifications:
+  email:
+    - sisa989@gmail.com
