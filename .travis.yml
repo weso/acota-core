@@ -4,7 +4,7 @@ jdk:
   - openjdk7
   - oraclejdk7
 before_script:
-  - 'wget -P acota-core http://156.35.82.101:7000/downloads/acota/utils/travis/core/acota.properties'
+  - 'wget http://156.35.82.101:7000/downloads/acota/utils/travis/core/weso/acota.properties'
   - 'wget http://156.35.82.101:7000/downloads/acota/utils/open_nlp.zip'
   - 'wget http://wordnetcode.princeton.edu/3.0/WNdb-3.0.tar.gz'
   - 'unzip open_nlp.zip'
