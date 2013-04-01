@@ -90,43 +90,63 @@ public abstract class TokenizerAnalyzerAdapter implements TokenizerAnalyzer{
 		return sentenceDetector.sentDetect(text);
 	}
 	
-	protected void setOpenNlpPosBin(String value){
-		if(openNlpPosBin==null || !openNlpPosBin.equals(value)){
-			this.openNlpPosBin = value;
-			this.isModified = true;
-		}
-	}
-	
-	protected void setOpenNlpSentBin(String value){
-		if(openNlpSentBin==null || !openNlpSentBin.equals(value)){
-			this.openNlpSentBin = value;
-			this.isModified = true;
-		}
-	}
-	
-	protected void setOpenNlpTokBin(String value){
-		if(openNlpTokBin==null || !openNlpTokBin.equals(value)){
-			this.openNlpTokBin = value;
-			this.isModified = true;
-		}
-	}
-	
-	protected void setTokenizerPattern(String value){
-		if(tokenizerPattern==null || !tokenizerPattern.equals(value)){
-			this.tokenizerPattern = value;
-			this.isModified = true;
-		}
-	}
-	
-	protected void setTokenizerTokens(List<String> value){
-		if(tokenizerTokens==null || !tokenizerTokens.equals(value)){
-			this.tokenizerTokens = value;
+	/**
+	 * Sets the OpenNLP POS.bin path and the modified flag to true
+	 * @param openNlpPosBin OpenNLP POS.bin path
+	 */
+	protected void setOpenNlpPosBin(String openNlpPosBin){
+		if(this.openNlpPosBin==null || !this.openNlpPosBin.equals(openNlpPosBin)){
+			this.openNlpPosBin = openNlpPosBin;
 			this.isModified = true;
 		}
 	}
 	
 	/**
-	 * Lazy Load all OpenNLP Files required by the Analyzer
+	 * Sets the OpenNLP SENT.bin path and the modified flag to true
+	 * @param openNlpSentBin OpenNLP SENT.bin path
+	 */
+	protected void setOpenNlpSentBin(String openNlpSentBin){
+		if(this.openNlpSentBin==null || !this.openNlpSentBin.equals(openNlpSentBin)){
+			this.openNlpSentBin = openNlpSentBin;
+			this.isModified = true;
+		}
+	}
+	
+	/**
+	 * Sets the OpenNLP TOK.bin path and the modified flag to true
+	 * @param openNlpTokBin OpenNLP TOK.bin path
+	 */
+	protected void setOpenNlpTokBin(String openNlpTokBin){
+		if(this.openNlpTokBin==null || !this.openNlpTokBin.equals(openNlpTokBin)){
+			this.openNlpTokBin = openNlpTokBin;
+			this.isModified = true;
+		}
+	}
+	
+	/**
+	 * Sets the Tokenizer Patter (RegEx.) and the modified flag to true
+	 * @param tokenizerPattern Tokenizer Pattern 
+	 */
+	protected void setTokenizerPattern(String tokenizerPattern){
+		if(this.tokenizerPattern==null || !this.tokenizerPattern.equals(tokenizerPattern)){
+			this.tokenizerPattern = tokenizerPattern;
+			this.isModified = true;
+		}
+	}
+	
+	/**
+	 * Sets the Tokenizer Tokens and the modified flag to true
+	 * @param tokenizerTokens Tokenizer Tokens
+	 */
+	protected void setTokenizerTokens(List<String> tokenizerTokens){
+		if(this.tokenizerTokens==null || !this.tokenizerTokens.equals(tokenizerTokens)){
+			this.tokenizerTokens = tokenizerTokens;
+			this.isModified = true;
+		}
+	}
+	
+	/**
+	 * Lazy Load the configuration required by the Analyzer
 	 */
 	protected void lazyInitialization() throws AcotaConfigurationException {
 		if(isModified){
@@ -137,7 +157,7 @@ public abstract class TokenizerAnalyzerAdapter implements TokenizerAnalyzer{
 	}
 	
 	/**
-	 * 
+	 * Lazy Load all OpenNLP Files required by the Analyzer
 	 */
 	protected abstract void lazyOpenNlpInitialization() throws AcotaConfigurationException;
 }

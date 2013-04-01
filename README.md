@@ -1,21 +1,24 @@
 <img src="http://weso.es/img/logo_acota_850.png">
 # ACOTA:  Automatic Collaborative Tagging 
-Master: [![Build Status](https://travis-ci.org/Weso/acota-core.png?branch=master)](https://travis-ci.org/Cesarla/ACOTA)
-Develop: [![Build Status](https://travis-ci.org/Weso/acota-core.png?branch=develop)](https://travis-ci.org/Cesarla/ACOTA)
+Master: [![Build Status](https://travis-ci.org/weso/acota-core.png?branch=master)](https://travis-ci.org/weso/acota-core)
+Develop: [![Build Status](https://travis-ci.org/weso/acota-core.png?branch=develop)](https://travis-ci.org/weso/acota-core)
 
 
 ## What is it? ##
 ACOTA (Automatic Collaborative Tagging). It is a Java-based library for suggesting 
-tags in a collaborative and automatic way. It is based on the use of ontologies to 
+tags in a collaborative and automatic way. It is based on the use of folksonomies to 
 manage the tags and provide advanced services of automatic learning, reasoning, etc. 
 
 
 ## Configuration example ##
-Acota configuration files only could by written in Java properties (key=value), XML 
-comming soon:
-Example Coming Soon!
+bAcota allows two different ways to configure it, programmatically and through a properties File:
+ - [How to Configure Acota] (https://github.com/weso/acota-core/wiki/Configure-Acota)
+ - [Acota-Core (Properties-List)] (https://github.comweso/acota-core/wiki/Acota-Core-(Properties-List\))
 
 ## How to use it? ##
+
+Detailed information of how to run acota-core: 
+ - [Acota-Core] (https://github.com/weso/acota-core/wiki/Generate-Some-Keywords)
 
 ```java
 RequestSuggestionTO request = new RequestSuggestionTO();
@@ -28,26 +31,40 @@ resource.setLabel("About Web Semantics Oviedo");
 resource.setUri("http://www.weso.es");
 request.setResource(resource);
 
-EnhancerAdapter luceneEnhancer = new LuceneEnhancer();
-EnhancerAdapter openNLPEnhancer = new OpenNLPEnhancer();
-EnhancerAdapter wordnetEnhancer = new WordnetEnhancer();
-EnhancerAdapter googleEnhancer = new GoogleEnhancer();
+EnhancerAdapter tokenizerEnhancer = new TokenizerEnhancer();
 
-luceneEnhancer.setSuccessor(openNLPEnhancer);
-openNLPEnhancer.setSuccessor(wordnetEnhancer);
-wordnetEnhancer.setSuccessor(googleEnhancer);
-googleEnhancer.setSuccessor(labelRecommenderEnhancer);
-
-SuggestionTO suggest = luceneEnhancer.enhance(request);
+SuggestionTO suggest = tokenizerEnhancer.enhance(request);
 
 Map<String, TagTO> labels = suggest.getTags();
 ```
 
 ## Download ##
-The current version of acota is **0.3.7-SNAPSHOT**, you can download it from:
+Grab the latest version of acota-core:
+ - [Acota Downloads Page](https://github.com/weso/acota-core/wiki/Download---ACOTA)
+
+## Current Stable Version
+The current version of acota is **0.3.6**, you can download it from:
+### For Maven Users
+ * [acota-core-0.3.6.jar](http://156.35.82.101:7000/downloads/acota/0.3.6/core/acota-core-0.3.6.jar "Download acota-feedback-0.3.6.jar") - [POM File](http://156.35.82.101:7000/downloads/acota/0.3.6/core/acota-core-0.3.6.pom "Download acota-feedback-0.3.6.pom")
+
+ Acota-Core is available in Maven Central:
+ ```
+  <dependency>
+    <groupId>es.weso</groupId>
+    <artifactId>acota-core</artifactId>
+    <version>0.3.6</version>
+ </dependency>
+ ```
+ * [acota-feedback-0.3.6.jar](http://156.35.82.101:7000/downloads/acota/0.3.6/feedback/acota-feedback-0.3.6.jar "Download acota-feedback-0.3.6.jar") - [POM File](http://156.35.82.101:7000/downloads/acota/0.3.6/feedback/acota-feedback-0.3.6.pom "Download acota-feedback-0.3.6.pom")
+
+### For Non Maven Users
+Acota-bundle includes all required dependancies:
+
+ * [acota-bundle-0.3.6.jar](http://156.35.82.101:7000/downloads/acota/0.3.6/bundle/acota-bundle-0.3.6.jar "Download acota-bundle-0.3.6.jar")
+
 
 ### Old Versions
-If you need an old version of Acota, please visit the [Acota Downloads Page](https://github.com/Cesarla/ACOTA/wiki/Download---ACOTA)
+If you need an old/snapshot version of acota-core, please visit the [Acota Downloads Page](https://github.com/weso/acota-core/wiki/Download---ACOTA)
 
 ## Disclaimer
 Acota-feedback requires a MySQL Database, you can download the SQL Creation Script from:

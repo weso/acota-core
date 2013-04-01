@@ -106,57 +106,85 @@ public abstract class OpenNLPAnalyzerAdapter implements OpenNLPAnalyzer{
 		return numbers.contains(tag);
 	}
 	
-	protected void setOpenNlpPosBin(String value){
-		if(openNlpPosBin==null || !openNlpPosBin.equals(value)){
-			this.openNlpPosBin = value;
-			this.isModified = true;
-		}
-	}
-	
-	protected void setOpenNlpSentBin(String value){
-		if(openNlpSentBin==null || !openNlpSentBin.equals(value)){
-			this.openNlpSentBin = value;
-			this.isModified = true;
-		}
-	}
-	
-	protected void setOpenNlpTokBin(String value){
-		if(openNlpTokBin==null || !openNlpTokBin.equals(value)){
-			this.openNlpTokBin = value;
-			this.isModified = true;
-		}
-	}
-	
-	protected void setOpenNlpTokens(List<String> value){
-		if(openNlpTokens==null || !openNlpTokens.equals(value)){
-			this.openNlpTokens = value;
-			this.isModified = true;
-		}
-	}
-	
-	protected void setOpenNlpNouns(List<String> value){
-		if(openNlpNouns==null || !openNlpNouns.equals(value)){
-			this.openNlpNouns = value;
-			this.isModified = true;
-		}
-	}
-	
-	protected void setOpenNlpVerbs(List<String> value){
-		if(openNlpVerbs==null || !openNlpVerbs.equals(value)){
-			this.openNlpVerbs = value;
-			this.isModified = true;
-		}
-	}
-	
-	protected void setOpenNlpNumbers(List<String> value){
-		if(openNlpNumbers==null || !openNlpNumbers.equals(value)){
-			this.openNlpNumbers = value;
+	/**
+	 * Sets the OpenNLP POS.bin path and the modified flag to true
+	 * @param openNlpPosBin OpenNLP POS.bin path
+	 */
+	protected void setOpenNlpPosBin(String openNlpPosBin){
+		if(this.openNlpPosBin==null || !this.openNlpPosBin.equals(openNlpPosBin)){
+			this.openNlpPosBin = openNlpPosBin;
 			this.isModified = true;
 		}
 	}
 	
 	/**
-	 * Lazy Load all OpenNLP Files required by the Analyzer
+	 * Sets the OpenNLP SENT.bin path and the modified flag to true
+	 * @param openNlpSentBin OpenNLP SENT.bin path
+	 */
+	protected void setOpenNlpSentBin(String openNlpSentBin){
+		if(this.openNlpSentBin==null || !this.openNlpSentBin.equals(openNlpSentBin)){
+			this.openNlpSentBin = openNlpSentBin;
+			this.isModified = true;
+		}
+	}
+	
+	/**
+	 * Sets the OpenNLP TOK.bin path and the modified flag to true
+	 * @param openNlpTokBin OpenNLP TOK.bin path
+	 */
+	protected void setOpenNlpTokBin(String openNlpTokBin){
+		if(this.openNlpTokBin==null || !this.openNlpTokBin.equals(openNlpTokBin)){
+			this.openNlpTokBin = openNlpTokBin;
+			this.isModified = true;
+		}
+	}
+	
+	/**
+	 * Sets the OpenNLP Tokens and the modified flag to true
+	 * @param openNlpTokens OpenNlp Tokens
+	 */
+	protected void setOpenNlpTokens(List<String> openNlpTokens){
+		if(this.openNlpTokens==null || !this.openNlpTokens.equals(openNlpTokens)){
+			this.openNlpTokens = openNlpTokens;
+			this.isModified = true;
+		}
+	}
+	
+	/**
+	 * Sets the OpenNLP Nouns and the modified flag to true
+	 * @param openNlpNouns OpenNlp Nouns
+	 */
+	protected void setOpenNlpNouns(List<String> openNlpNouns){
+		if(this.openNlpNouns==null || !this.openNlpNouns.equals(openNlpNouns)){
+			this.openNlpNouns = openNlpNouns;
+			this.isModified = true;
+		}
+	}
+	
+	/**
+	 * Sets the OpenNLP Verbs and the modified flag to true
+	 * @param openNlpVerbs OpenNlp Verbs
+	 */
+	protected void setOpenNlpVerbs(List<String> openNlpVerbs){
+		if(this.openNlpVerbs==null || !this.openNlpVerbs.equals(openNlpVerbs)){
+			this.openNlpVerbs = openNlpVerbs;
+			this.isModified = true;
+		}
+	}
+	
+	/**
+	 * Sets the OpenNLP Numbers and the modified flag to true
+	 * @param openNlpNumbers OpenNlp Numbers
+	 */
+	protected void setOpenNlpNumbers(List<String> openNlpNumbers){
+		if(this.openNlpNumbers==null || !this.openNlpNumbers.equals(openNlpNumbers)){
+			this.openNlpNumbers = openNlpNumbers;
+			this.isModified = true;
+		}
+	}
+	
+	/**
+	 * Lazy Load the configuration required by the Analyzer
 	 */
 	protected final void lazyInitialization() throws AcotaConfigurationException {
 		if(isModified){
@@ -169,7 +197,7 @@ public abstract class OpenNLPAnalyzerAdapter implements OpenNLPAnalyzer{
 	}
 	
 	/**
-	 * 
+	 * Loads OpenNLP required files
 	 */
 	protected abstract void lazyOpenNlpInitialization() throws AcotaConfigurationException;
 }

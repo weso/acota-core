@@ -1,9 +1,7 @@
 # maven target folders
-
-acota-core/target
-acota-feedback/target
-acota-examples/target
-acota-utils/target
+target
+# Clover Files
+.clover
 
 # java specific
 *.class
