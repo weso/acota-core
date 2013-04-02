@@ -1,9 +1,9 @@
 # maven
-target
+target/
 *.versionsBackup
 
 # clover Files
-.clover
+.clover/
 
 # java specific
 *.class
