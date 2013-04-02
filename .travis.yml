@@ -1,16 +1,30 @@
 language: java
+
+env:
+  global:
+    - SONATYPE_USERNAME=cesarla
+    - secure: "J3j/Ztd5y/rfbWVlV0Jw0TyPE64KF4/tet7dT5jrBW0+90IKzWhLpzm7I7IH\nzIN7eT9/C+uHv8hiT67bc+AA3BSb24e1KVp4F13dEK7gl6QjCPIRQgilCrVl\ntLHUCWw7rmdPWz42/530nSV271gK8+x9OOV2jL0NKNOHdCIZobE="
+
 jdk:
   - openjdk6
   - openjdk7
   - oraclejdk7
+
 before_script:
   - 'wget http://156.35.82.101:7000/downloads/acota/utils/travis/core/weso/acota.properties'
   - 'wget http://156.35.82.101:7000/downloads/acota/utils/open_nlp.zip'
   - 'wget http://wordnetcode.princeton.edu/3.0/WNdb-3.0.tar.gz'
   - 'unzip open_nlp.zip'
   - 'tar -xzf WNdb-3.0.tar.gz'
+
 script: 
   - mvn -Duser.timezone=GMT -f pom.xml install test
+
+after_success:
+  - 'wget 156.35.82.101:7000/downloads/acota/utils/travis/maven/addServer.py'
+  - python addServer.py
+  - mvn clean deploy --settings ~/.m2/mySettings.xml
+
 notifications:
   email:
     - sisa989@gmail.com

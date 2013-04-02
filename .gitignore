@@ -1,14 +1,12 @@
-# maven target folders
+# maven
 target
-# Clover Files
+*.versionsBackup
+
+# clover Files
 .clover
 
 # java specific
 *.class
-
-# maven
-
-*.versionsBackup
 
 ## generic files to ignore
 *~
