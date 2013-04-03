@@ -35,7 +35,7 @@ public abstract class OpenNLPAnalyzerAdapter implements OpenNLPAnalyzer{
 	protected List<String> openNlpVerbs;
 	protected List<String> openNlpNumbers;
 	
-	private boolean isModified;
+	private boolean modified;
 	
 	/**
 	 * @see es.weso.acota.core.business.enhancer.Configurable#loadConfiguration(CoreConfiguration)
@@ -113,7 +113,7 @@ public abstract class OpenNLPAnalyzerAdapter implements OpenNLPAnalyzer{
 	protected void setOpenNlpPosBin(String openNlpPosBin){
 		if(this.openNlpPosBin==null || !this.openNlpPosBin.equals(openNlpPosBin)){
 			this.openNlpPosBin = openNlpPosBin;
-			this.isModified = true;
+			this.modified = true;
 		}
 	}
 	
@@ -124,7 +124,7 @@ public abstract class OpenNLPAnalyzerAdapter implements OpenNLPAnalyzer{
 	protected void setOpenNlpSentBin(String openNlpSentBin){
 		if(this.openNlpSentBin==null || !this.openNlpSentBin.equals(openNlpSentBin)){
 			this.openNlpSentBin = openNlpSentBin;
-			this.isModified = true;
+			this.modified = true;
 		}
 	}
 	
@@ -135,7 +135,7 @@ public abstract class OpenNLPAnalyzerAdapter implements OpenNLPAnalyzer{
 	protected void setOpenNlpTokBin(String openNlpTokBin){
 		if(this.openNlpTokBin==null || !this.openNlpTokBin.equals(openNlpTokBin)){
 			this.openNlpTokBin = openNlpTokBin;
-			this.isModified = true;
+			this.modified = true;
 		}
 	}
 	
@@ -146,7 +146,7 @@ public abstract class OpenNLPAnalyzerAdapter implements OpenNLPAnalyzer{
 	protected void setOpenNlpTokens(List<String> openNlpTokens){
 		if(this.openNlpTokens==null || !this.openNlpTokens.equals(openNlpTokens)){
 			this.openNlpTokens = openNlpTokens;
-			this.isModified = true;
+			this.modified = true;
 		}
 	}
 	
@@ -157,7 +157,7 @@ public abstract class OpenNLPAnalyzerAdapter implements OpenNLPAnalyzer{
 	protected void setOpenNlpNouns(List<String> openNlpNouns){
 		if(this.openNlpNouns==null || !this.openNlpNouns.equals(openNlpNouns)){
 			this.openNlpNouns = openNlpNouns;
-			this.isModified = true;
+			this.modified = true;
 		}
 	}
 	
@@ -168,7 +168,7 @@ public abstract class OpenNLPAnalyzerAdapter implements OpenNLPAnalyzer{
 	protected void setOpenNlpVerbs(List<String> openNlpVerbs){
 		if(this.openNlpVerbs==null || !this.openNlpVerbs.equals(openNlpVerbs)){
 			this.openNlpVerbs = openNlpVerbs;
-			this.isModified = true;
+			this.modified = true;
 		}
 	}
 	
@@ -179,7 +179,7 @@ public abstract class OpenNLPAnalyzerAdapter implements OpenNLPAnalyzer{
 	protected void setOpenNlpNumbers(List<String> openNlpNumbers){
 		if(this.openNlpNumbers==null || !this.openNlpNumbers.equals(openNlpNumbers)){
 			this.openNlpNumbers = openNlpNumbers;
-			this.isModified = true;
+			this.modified = true;
 		}
 	}
 	
@@ -187,12 +187,13 @@ public abstract class OpenNLPAnalyzerAdapter implements OpenNLPAnalyzer{
 	 * Lazy Load the configuration required by the Analyzer
 	 */
 	protected final void lazyInitialization() throws AcotaConfigurationException {
-		if(isModified){
+		if(modified){
 			lazyOpenNlpInitialization();
 			this.tokens = new HashSet<String>(openNlpTokens);
 			this.nouns = new HashSet<String>(openNlpNouns);
 			this.verbs = new HashSet<String>(openNlpVerbs);
 			this.numbers = new HashSet<String>(openNlpNumbers);
+			this.modified = false;
 		}
 	}
 	

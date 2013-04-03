@@ -32,7 +32,7 @@ public abstract class TokenizerAnalyzerAdapter implements TokenizerAnalyzer{
 	protected String openNlpSentBin;
 	protected String openNlpTokBin;
 	
-	private boolean isModified;
+	private boolean modified;
 	
 	/**
 	 * @see es.weso.acota.core.business.enhancer.Configurable#loadConfiguration(CoreConfiguration)
@@ -97,7 +97,7 @@ public abstract class TokenizerAnalyzerAdapter implements TokenizerAnalyzer{
 	protected void setOpenNlpPosBin(String openNlpPosBin){
 		if(this.openNlpPosBin==null || !this.openNlpPosBin.equals(openNlpPosBin)){
 			this.openNlpPosBin = openNlpPosBin;
-			this.isModified = true;
+			this.modified = true;
 		}
 	}
 	
@@ -108,7 +108,7 @@ public abstract class TokenizerAnalyzerAdapter implements TokenizerAnalyzer{
 	protected void setOpenNlpSentBin(String openNlpSentBin){
 		if(this.openNlpSentBin==null || !this.openNlpSentBin.equals(openNlpSentBin)){
 			this.openNlpSentBin = openNlpSentBin;
-			this.isModified = true;
+			this.modified = true;
 		}
 	}
 	
@@ -119,7 +119,7 @@ public abstract class TokenizerAnalyzerAdapter implements TokenizerAnalyzer{
 	protected void setOpenNlpTokBin(String openNlpTokBin){
 		if(this.openNlpTokBin==null || !this.openNlpTokBin.equals(openNlpTokBin)){
 			this.openNlpTokBin = openNlpTokBin;
-			this.isModified = true;
+			this.modified = true;
 		}
 	}
 	
@@ -130,7 +130,7 @@ public abstract class TokenizerAnalyzerAdapter implements TokenizerAnalyzer{
 	protected void setTokenizerPattern(String tokenizerPattern){
 		if(this.tokenizerPattern==null || !this.tokenizerPattern.equals(tokenizerPattern)){
 			this.tokenizerPattern = tokenizerPattern;
-			this.isModified = true;
+			this.modified = true;
 		}
 	}
 	
@@ -141,7 +141,7 @@ public abstract class TokenizerAnalyzerAdapter implements TokenizerAnalyzer{
 	protected void setTokenizerTokens(List<String> tokenizerTokens){
 		if(this.tokenizerTokens==null || !this.tokenizerTokens.equals(tokenizerTokens)){
 			this.tokenizerTokens = tokenizerTokens;
-			this.isModified = true;
+			this.modified = true;
 		}
 	}
 	
@@ -149,10 +149,11 @@ public abstract class TokenizerAnalyzerAdapter implements TokenizerAnalyzer{
 	 * Lazy Load the configuration required by the Analyzer
 	 */
 	protected void lazyInitialization() throws AcotaConfigurationException {
-		if(isModified){
+		if(modified){
 			lazyOpenNlpInitialization();
 			this.pattern = Pattern.compile(tokenizerPattern);
 			this.tokens = new HashSet<String>(tokenizerTokens);
+			this.modified = false;
 		}
 	}
 	
