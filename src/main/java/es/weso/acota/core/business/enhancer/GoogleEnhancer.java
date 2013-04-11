@@ -124,7 +124,6 @@ public class GoogleEnhancer extends EnhancerAdapter implements Configurable {
 			try{
 				connection.connect();
 			}catch(Exception e){
-				
 				connection.connect();
 			}
 			if (isValidResponse(connection)) {
