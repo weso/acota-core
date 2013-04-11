@@ -1,16 +1,12 @@
-# maven target folders
+# maven
+target/
+*.versionsBackup
 
-acota-core/target
-acota-feedback/target
-acota-examples/target
-acota-utils/target
+# clover Files
+.clover/
 
 # java specific
 *.class
-
-# maven
-
-*.versionsBackup
 
 ## generic files to ignore
 *~

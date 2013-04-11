@@ -32,18 +32,19 @@ public interface TokenizerAnalyzer extends Configurable{
 	 * @return Split The String[] with the individual tags
 	 */
 	String[] tag(String[] text) throws AcotaConfigurationException;
+	
 	/**
 	 * Splits a string into its atomic parts
 	 * @param text The string to be tokenized.
 	 * @return The String[] with the individual tokens as the array elements
 	 */
 	String[] tokenize(String text) throws AcotaConfigurationException;
+	
 	/**
 	 * Splits a string into sentences
 	 * @param text The string to be extracted
 	 * @return The String[] with the detected sentences
 	 */
 	String[] sentDetect(String text) throws AcotaConfigurationException;
-	
 	
 }

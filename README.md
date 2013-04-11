@@ -1,21 +1,24 @@
 <img src="http://weso.es/img/logo_acota_850.png">
 # ACOTA:  Automatic Collaborative Tagging 
-Master: [![Build Status](https://travis-ci.org/Weso/acota-core.png?branch=master)](https://travis-ci.org/Cesarla/ACOTA)
-Develop: [![Build Status](https://travis-ci.org/Weso/acota-core.png?branch=develop)](https://travis-ci.org/Cesarla/ACOTA)
+Master: [![Build Status](https://travis-ci.org/weso/acota-core.png?branch=master)](https://github.com/weso/acota-utils/tree/master)
+Develop: [![Build Status](https://travis-ci.org/weso/acota-core.png?branch=develop)](https://github.com/weso/acota-utils/tree/develop)
 
 
 ## What is it? ##
 ACOTA (Automatic Collaborative Tagging). It is a Java-based library for suggesting 
-tags in a collaborative and automatic way. It is based on the use of ontologies to 
+tags in a collaborative and automatic way. It is based on the use of folksonomies to 
 manage the tags and provide advanced services of automatic learning, reasoning, etc. 
 
 
 ## Configuration example ##
-Acota configuration files only could by written in Java properties (key=value), XML 
-comming soon:
-Example Coming Soon!
+bAcota allows two different ways to configure it, programmatically and through a properties File:
+ - [How to Configure Acota] (https://github.com/weso/acota-core/wiki/Configure-Acota)
+ - [Acota-Core (Properties-List)] (https://github.comweso/acota-core/wiki/Acota-Core-(Properties-List\))
 
 ## How to use it? ##
+
+Detailed information of how to run acota-core: 
+ - [Acota-Core] (https://github.com/weso/acota-core/wiki/Generate-Some-Keywords)
 
 ```java
 RequestSuggestionTO request = new RequestSuggestionTO();
@@ -28,36 +31,46 @@ resource.setLabel("About Web Semantics Oviedo");
 resource.setUri("http://www.weso.es");
 request.setResource(resource);
 
-EnhancerAdapter luceneEnhancer = new LuceneEnhancer();
-EnhancerAdapter openNLPEnhancer = new OpenNLPEnhancer();
-EnhancerAdapter wordnetEnhancer = new WordnetEnhancer();
-EnhancerAdapter googleEnhancer = new GoogleEnhancer();
+EnhancerAdapter tokenizerEnhancer = new TokenizerEnhancer();
 
-luceneEnhancer.setSuccessor(openNLPEnhancer);
-openNLPEnhancer.setSuccessor(wordnetEnhancer);
-wordnetEnhancer.setSuccessor(googleEnhancer);
-googleEnhancer.setSuccessor(labelRecommenderEnhancer);
-
-SuggestionTO suggest = luceneEnhancer.enhance(request);
+SuggestionTO suggest = tokenizerEnhancer.enhance(request);
 
 Map<String, TagTO> labels = suggest.getTags();
 ```
 
 ## Download ##
-The current version of acota is **0.3.7-SNAPSHOT**, you can download it from:
+The current version of acota is **0.3.7**, you can download it from:
+
+### For Maven Users
+Acota-Core is available in Maven Central:
+ ```
+  <dependency>
+    <groupId>es.weso</groupId>
+    <artifactId>acota-core</artifactId>
+    <version>0.3.7</version>
+ </dependency>
+
+Looking for SNAPSHOTS?
+* [SNAPSHOTS](https://oss.sonatype.org/content/repositories/snapshots/es/weso/acota-core/0.3.7-SNAPSHOT/ "Acota-core SNAPSHOTS Repository")
+
+### For Non Maven Users
+Acota-bundle includes all required dependancies:
+
+ * [acota-core-0.3.7.jar](http://156.35.82.101:7000/downloads/acota/0.3.7/core/acota-core-0.3.7.jar "Download acota-core-0.3.7.jar")
+
 
 ### Old Versions
-If you need an old version of Acota, please visit the [Acota Downloads Page](https://github.com/Cesarla/ACOTA/wiki/Download---ACOTA)
+If you need an old version of acota-core, please visit the [Acota Downloads Page](https://github.com/weso/acota-core/wiki/Download---ACOTA)
 
 ## Disclaimer
-Acota-feedback requires a MySQL Database, you can download the SQL Creation Script from:
- * [ACOTA's Database SQL Dump](http://156.35.82.101:7000/downloads/acota/utils/acota.sql "ACOTA's Database SQL Dump")
-
 Acota does not include Wordnet Dictionary or NLP Files, you can download it from:
  * [Wordnet 3.0](http://wordnetcode.princeton.edu/3.0/WNdb-3.0.tar.gz "Download Wordnet 3.0 Dict Files")
  * [OpenNLP Bundle Files](http://156.35.82.101:7000/downloads/acota/utils/open_nlp.zip "OpenNLP Bundle Files")
  * [OpenNLP English Files](http://156.35.82.101:7000/downloads/acota/utils/open_nlp/es.zip "OpenNLP English Files")
  * [OpenNLP Spanish Files](http://156.35.82.101:7000/downloads/acota/utils/open_nlp/en.zip "OpenNLP Spanish Files")
+
+There is a project called acota-utils that includes all the required files embebed within a jar:
+ * [acota-utils](https://github.com/weso/acota-utils "Acota-utils")
 
 ## License
 

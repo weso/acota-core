@@ -1,23 +1,27 @@
 language: java
+
 jdk:
   - openjdk6
   - openjdk7
   - oraclejdk7
+
 before_script:
-  - 'wget -P acota-core http://156.35.82.101:7000/downloads/acota/utils/travis/core/acota.properties'
-  - 'wget -P acota-feedback http://156.35.82.101:7000/downloads/acota/utils/travis/feedback/acota.properties'
+  - 'wget http://156.35.82.101:7000/downloads/acota/utils/travis/core/weso/acota.properties'
   - 'wget http://156.35.82.101:7000/downloads/acota/utils/open_nlp.zip'
-  - 'wget http://156.35.82.101:7000/downloads/acota/utils/travis/sql/acota.sql'
   - 'wget http://wordnetcode.princeton.edu/3.0/WNdb-3.0.tar.gz'
   - 'unzip open_nlp.zip'
   - 'tar -xzf WNdb-3.0.tar.gz'
-  - mysql --user="root" --password="" -e 'SET GLOBAL time_zone = "+00:00";'
-  - mysql -e 'create database acota;'
-  - mysql --user="root" --password="" acota < acota.sql
-script: 
-  - mvn -Duser.timezone=GMT -f acota-core/pom.xml install test
-  - mvn -Duser.timezone=GMT -f acota-feedback/pom.xml install test
-  - mvn -Duser.timezone=GMT -f acota-examples/pom.xml install test
+  - 'wget 156.35.82.101:7000/downloads/acota/utils/travis/maven/addServer.py'
+
+env:
+  global:
+    - SONATYPE_USERNAME=cesarla
+    - secure: "J3j/Ztd5y/rfbWVlV0Jw0TyPE64KF4/tet7dT5jrBW0+90IKzWhLpzm7I7IH\nzIN7eT9/C+uHv8hiT67bc+AA3BSb24e1KVp4F13dEK7gl6QjCPIRQgilCrVl\ntLHUCWw7rmdPWz42/530nSV271gK8+x9OOV2jL0NKNOHdCIZobE="
+
+after_success:
+  - python addServer.py
+  - mvn clean deploy --settings ~/.m2/mySettings.xml
+
 notifications:
   email:
     - sisa989@gmail.com

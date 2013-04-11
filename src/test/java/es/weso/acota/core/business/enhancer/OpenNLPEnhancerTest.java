@@ -122,7 +122,7 @@ public class OpenNLPEnhancerTest {
 		
 		openNLPEnhancer.enhance(request);
 		
-		assertEquals(9.0d, suggest.getTags().get("prueba").getValue(),1e-15);
+		assertEquals(6.0d, suggest.getTags().get("prueba").getValue(),1e-15);
 	}
 	
 	@Test

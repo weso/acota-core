@@ -152,8 +152,7 @@ public class OpenNLPEnhancer extends EnhancerAdapter implements Configurable {
 	public void analysisOfTerms(String text) throws IOException, AcotaConfigurationException {
 		this.openNlpAnalyzer = loadAnalyzer(text);
 
-		String sentences[] = openNlpAnalyzer.sentDetect(suggest
-				.getResource().getDescription());
+		String sentences[] = openNlpAnalyzer.sentDetect(text);
 		for (String sentence : sentences) {
 			String[] textTokenized = openNlpAnalyzer.tokenize(sentence);
 			processSetence(openNlpAnalyzer.tag(textTokenized), textTokenized);
