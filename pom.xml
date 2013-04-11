@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>es.weso</groupId>
 	<artifactId>acota-core</artifactId>
-	<version>0.3.7</version>
+	<version>0.3.7-SNAPSHOT</version>
 	<name>acota-core</name>
 	<packaging>jar</packaging>
 	<description>acota-core, library ${project.version}</description>

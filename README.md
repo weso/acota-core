@@ -1,7 +1,7 @@
 <img src="http://weso.es/img/logo_acota_850.png">
 # ACOTA:  Automatic Collaborative Tagging 
-Master: [![Build Status](https://travis-ci.org/weso/acota-core.png?branch=master)](https://travis-ci.org/weso/acota-core)
-Develop: [![Build Status](https://travis-ci.org/weso/acota-core.png?branch=develop)](https://travis-ci.org/weso/acota-core)
+Master: [![Build Status](https://travis-ci.org/weso/acota-core.png?branch=master)](https://github.com/weso/acota-utils/tree/master)
+Develop: [![Build Status](https://travis-ci.org/weso/acota-core.png?branch=develop)](https://github.com/weso/acota-utils/tree/develop)
 
 
 ## What is it? ##
@@ -39,42 +39,38 @@ Map<String, TagTO> labels = suggest.getTags();
 ```
 
 ## Download ##
-Grab the latest version of acota-core:
- - [Acota Downloads Page](https://github.com/weso/acota-core/wiki/Download---ACOTA)
+The current version of acota is **0.3.7**, you can download it from:
 
-## Current Stable Version
-The current version of acota is **0.3.6**, you can download it from:
 ### For Maven Users
- * [acota-core-0.3.6.jar](http://156.35.82.101:7000/downloads/acota/0.3.6/core/acota-core-0.3.6.jar "Download acota-feedback-0.3.6.jar") - [POM File](http://156.35.82.101:7000/downloads/acota/0.3.6/core/acota-core-0.3.6.pom "Download acota-feedback-0.3.6.pom")
-
- Acota-Core is available in Maven Central:
+Acota-Core is available in Maven Central:
  ```
   <dependency>
     <groupId>es.weso</groupId>
     <artifactId>acota-core</artifactId>
-    <version>0.3.6</version>
+    <version>0.3.7</version>
  </dependency>
- ```
- * [acota-feedback-0.3.6.jar](http://156.35.82.101:7000/downloads/acota/0.3.6/feedback/acota-feedback-0.3.6.jar "Download acota-feedback-0.3.6.jar") - [POM File](http://156.35.82.101:7000/downloads/acota/0.3.6/feedback/acota-feedback-0.3.6.pom "Download acota-feedback-0.3.6.pom")
+
+Looking for SNAPSHOTS?
+* [SNAPSHOTS](https://oss.sonatype.org/content/repositories/snapshots/es/weso/acota-core/0.3.7-SNAPSHOT/ "Acota-core SNAPSHOTS Repository")
 
 ### For Non Maven Users
 Acota-bundle includes all required dependancies:
 
- * [acota-bundle-0.3.6.jar](http://156.35.82.101:7000/downloads/acota/0.3.6/bundle/acota-bundle-0.3.6.jar "Download acota-bundle-0.3.6.jar")
+ * [acota-core-0.3.7.jar](http://156.35.82.101:7000/downloads/acota/0.3.7/core/acota-core-0.3.7.jar "Download acota-core-0.3.7.jar")
 
 
 ### Old Versions
-If you need an old/snapshot version of acota-core, please visit the [Acota Downloads Page](https://github.com/weso/acota-core/wiki/Download---ACOTA)
+If you need an old version of acota-core, please visit the [Acota Downloads Page](https://github.com/weso/acota-core/wiki/Download---ACOTA)
 
 ## Disclaimer
-Acota-feedback requires a MySQL Database, you can download the SQL Creation Script from:
- * [ACOTA's Database SQL Dump](http://156.35.82.101:7000/downloads/acota/utils/acota.sql "ACOTA's Database SQL Dump")
-
 Acota does not include Wordnet Dictionary or NLP Files, you can download it from:
  * [Wordnet 3.0](http://wordnetcode.princeton.edu/3.0/WNdb-3.0.tar.gz "Download Wordnet 3.0 Dict Files")
  * [OpenNLP Bundle Files](http://156.35.82.101:7000/downloads/acota/utils/open_nlp.zip "OpenNLP Bundle Files")
  * [OpenNLP English Files](http://156.35.82.101:7000/downloads/acota/utils/open_nlp/es.zip "OpenNLP English Files")
  * [OpenNLP Spanish Files](http://156.35.82.101:7000/downloads/acota/utils/open_nlp/en.zip "OpenNLP Spanish Files")
+
+There is a project called acota-utils that includes all the required files embebed within a jar:
+ * [acota-utils](https://github.com/weso/acota-utils "Acota-utils")
 
 ## License
 
