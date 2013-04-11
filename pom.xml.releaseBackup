@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>es.weso</groupId>
 	<artifactId>acota-core</artifactId>
-	<version>0.3.7</version>
+	<version>0.3.7-SNAPSHOT</version>
 	<name>acota-core</name>
 	<packaging>jar</packaging>
 	<description>acota-core, library ${project.version}</description>
@@ -22,8 +23,7 @@
 		<connection>scm:git:git@github.com:weso/acota-core.git</connection>
 		<url>scm:git:git@github.com:weso/acota-core.git</url>
 		<developerConnection>scm:git:git@github.com:weso/acota-core.git</developerConnection>
-	  <tag>acota-core-0.3.7</tag>
-  </scm>
+	</scm>
 	<organization>
 		<name>WESO</name>
 		<url>http://www.weso.es</url>
