@@ -49,6 +49,7 @@ Acota-Core is available in Maven Central:
     <artifactId>acota-core</artifactId>
     <version>0.3.7</version>
  </dependency>
+ ```
 
 Looking for SNAPSHOTS?
 * [SNAPSHOTS](https://oss.sonatype.org/content/repositories/snapshots/es/weso/acota-core/0.3.7-SNAPSHOT/ "Acota-core SNAPSHOTS Repository")
