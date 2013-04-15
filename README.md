@@ -1,7 +1,7 @@
 <img src="http://weso.es/img/logo_acota_850.png">
 # ACOTA:  Automatic Collaborative Tagging 
-Master: [![Build Status](https://travis-ci.org/weso/acota-core.png?branch=master)](https://github.com/weso/acota-utils/tree/master)
-Develop: [![Build Status](https://travis-ci.org/weso/acota-core.png?branch=develop)](https://github.com/weso/acota-utils/tree/develop)
+Master: [![Build Status](https://travis-ci.org/weso/acota-core.png?branch=master)](https://travis-ci.org/weso/acota-core)
+Develop: [![Build Status](https://travis-ci.org/weso/acota-core.png?branch=develop)](https://travis-ci.org/weso/acota-core)
 
 
 ## What is it? ##
@@ -11,7 +11,7 @@ manage the tags and provide advanced services of automatic learning, reasoning, 
 
 
 ## Configuration example ##
-bAcota allows two different ways to configure it, programmatically and through a properties File:
+Acota allows two different ways to configure it, programmatically and through a properties File:
  - [How to Configure Acota] (https://github.com/weso/acota-core/wiki/Configure-Acota)
  - [Acota-Core (Properties-List)] (https://github.comweso/acota-core/wiki/Acota-Core-(Properties-List\))
 
@@ -49,7 +49,8 @@ Acota-Core is available in Maven Central:
     <artifactId>acota-core</artifactId>
     <version>0.3.7</version>
  </dependency>
-
+ ```
+ 
 Looking for SNAPSHOTS?
 * [SNAPSHOTS](https://oss.sonatype.org/content/repositories/snapshots/es/weso/acota-core/0.3.7-SNAPSHOT/ "Acota-core SNAPSHOTS Repository")
 

@@ -7,7 +7,7 @@
 	<name>acota-core</name>
 	<packaging>jar</packaging>
 	<description>acota-core, library ${project.version}</description>
-	<url>https://github.com/Cesarla/ACOTA/</url>
+	<url>https://github.com/weso/acota-core</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
@@ -30,9 +30,11 @@
 	</organization>
 	<developers>
 		<developer>
+			<id>cesarla</id>
 			<name>César Luis Alvargonzález</name>
-			<organization>WESO</organization>
+			<email>info@cesarla.com</email>
 			<url>http://www.cesarla.com</url>
+			<organization>WESO</organization>
 			<organizationUrl>http://www.weso.es</organizationUrl>
 			<roles>
 				<role>architect</role>
@@ -52,36 +54,25 @@
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-all</artifactId>
-			<version>1.9.0</version>
+			<version>1.9.5</version>
 			<scope>test</scope>
 		</dependency>
-		<!-- For Logging purposes -->
 		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.17</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-			<version>3.1</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>2.4</version>
-		</dependency>
-		<!-- Apache Configuration Utils -->
-		<dependency>
-			<groupId>commons-configuration</groupId>
-			<artifactId>commons-configuration</artifactId>
-			<version>1.9</version>
+			<groupId>es.weso</groupId>
+			<artifactId>acota-seed</artifactId>
+			<version>0.3.8-SNAPSHOT</version>
 		</dependency>
 		<!-- Lucene -->
 		<dependency>
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-core</artifactId>
 			<version>3.6.0</version>
+		</dependency>
+		<!--LangDetect - Commons IO -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.4</version>
 		</dependency>
 		<!--LangDetect - Language Detection -->
 		<dependency>
