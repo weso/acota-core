@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>es.weso</groupId>
 	<artifactId>acota-core</artifactId>
@@ -22,8 +23,8 @@
 		<connection>scm:git:git@github.com:weso/acota-core.git</connection>
 		<url>scm:git:git@github.com:weso/acota-core.git</url>
 		<developerConnection>scm:git:git@github.com:weso/acota-core.git</developerConnection>
-  	  <tag>HEAD</tag>
-  </scm>
+		<tag>HEAD</tag>
+	</scm>
 	<organization>
 		<name>WESO</name>
 		<url>http://www.weso.es</url>
@@ -96,6 +97,12 @@
 			<groupId>edu.mit</groupId>
 			<artifactId>jwi</artifactId>
 			<version>2.2.3</version>
+		</dependency>
+		<!-- Memcached Client -->
+		<dependency>
+			<groupId>com.googlecode.xmemcached</groupId>
+			<artifactId>xmemcached</artifactId>
+			<version>1.4.1</version>
 		</dependency>
 	</dependencies>
 	<repositories>

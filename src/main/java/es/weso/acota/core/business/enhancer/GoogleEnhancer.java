@@ -1,11 +1,7 @@
 package es.weso.acota.core.business.enhancer;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.net.URLEncoder;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Map.Entry;
@@ -26,6 +22,8 @@ import es.weso.acota.core.entity.TagTO;
 import es.weso.acota.core.exceptions.AcotaConfigurationException;
 import es.weso.acota.core.exceptions.DocumentBuilderException;
 import es.weso.acota.core.utils.DocumentBuilderHelper;
+import es.weso.acota.core.utils.LanguageUtil;
+import es.weso.acota.core.utils.MemcachedRESTClient;
 
 /**
  * GoogleEnhancer is an {@link Enhancer} specialized in making calls to Google 
@@ -39,13 +37,12 @@ public class GoogleEnhancer extends EnhancerAdapter implements Configurable {
 
 	protected static Logger logger = Logger.getLogger(GoogleEnhancer.class);
 	
-	protected static final String TEXT_XML = "text/xml";
-	protected static final String APPLICATION_XML = "application/xml";
-	
 	protected String googleUrl;
 	protected String googleEncoding;
 	
 	protected double googleRelevance;
+	
+	protected MemcachedRESTClient restClient;
 	
 	protected CoreConfiguration configuration;
 	
@@ -80,6 +77,7 @@ public class GoogleEnhancer extends EnhancerAdapter implements Configurable {
 		this.googleUrl = configuration.getGoogleUrl();
 		this.googleEncoding = configuration.getGoogleEncoding();
 		this.googleRelevance = configuration.getGoogleRelevance();
+		this.restClient = new MemcachedRESTClient(configuration);
 	}
 	
 	@Override
@@ -89,9 +87,30 @@ public class GoogleEnhancer extends EnhancerAdapter implements Configurable {
 			backupSet.add(label);
 		}
 		for (Entry<String, TagTO> label : backupSet) {
-			URL url = new URL(googleUrl + label.getKey().toString());
-			makeRESTCall(url);
+			String result = restClient.execute(generateURL(label.getKey()), 
+					MemcachedRESTClient.APPLICATION_XML, googleEncoding);
+			Document document = processResponse(result);
+			processDocument(document);
 		}
+	}
+
+	/**
+	 * Generates the Google (Auto)Complete URL
+	 * @param label Label to generate the Google (Auto)Complete URL
+	 * @return URL of the Google (Auto)Complete related to the label
+	 * @throws UnsupportedEncodingException The Character Encoding is not supported.
+	 * @throws AcotaConfigurationException Any exception that occurs 
+	 * while initializing Configuration object
+	 */
+	private String generateURL(String label)
+			throws UnsupportedEncodingException, AcotaConfigurationException {
+		StringBuilder url = new StringBuilder(googleUrl)
+			.append(URLEncoder.encode(label, "utf8"));
+		String language = LanguageUtil.detect(label);
+		if(language.equals(LanguageUtil.ISO_639_UNDEFINED)){
+			url.append("&hl=").append(LanguageUtil.detect(label));
+		}
+		return url.toString();
 	}
 
 	@Override
@@ -108,72 +127,13 @@ public class GoogleEnhancer extends EnhancerAdapter implements Configurable {
 	}
 
 	/**
-	 * Makes a REST Call to Google Autocomplete's API
-	 * @param url URL of the Rest Call
-	 * @throws IOException Signals that an I/O exception of some sort has occurred
-	 * @throws DocumentBuilderException Any exception that occurs during the DOM creation.
-	 * @throws TransformerException Any exception that occurs 
-	 */
-	protected void makeRESTCall(URL url) throws IOException,
-			DocumentBuilderException, TransformerException {
-		HttpURLConnection connection = null;
-		try {
-			connection = (HttpURLConnection) url.openConnection();
-			connection.setInstanceFollowRedirects(true);
-			connection.setRequestProperty("Accept", APPLICATION_XML);
-			try{
-				connection.connect();
-			}catch(Exception e){
-				connection.connect();
-			}
-			if (isValidResponse(connection)) {
-				Document document = processResponse(connection);
-				processDocument(document);
-			}
-		} finally {
-			if (null != connection) {
-				connection.disconnect();
-			}
-		}
-	}
-
-	/**
 	 * Transforms the Google Autocomplete REST call return to an XML Document
-	 * @param connection Rest call return
+	 * @param response Rest call response on RAW
 	 * @return XML Document returned by the rest call
-	 * @throws UnsupportedEncodingException The Character Encoding is not supported.
-	 * @throws IOException Signals that an I/O exception of some sort has occurred
 	 * @throws DocumentBuilderException Any exception that occurs during the DOM creation.
 	 */
-	protected Document processResponse(HttpURLConnection connection)
-			throws UnsupportedEncodingException, IOException,
-			DocumentBuilderException {
-		BufferedReader rd = new BufferedReader(new InputStreamReader(
-				connection.getInputStream(), googleEncoding));
-		StringBuilder response = new StringBuilder();
-		try {
-			String line = null;
-			while ((line = rd.readLine()) != null) {
-				response.append(line);
-				response.append('\n');
-			}
-		} finally {
-			rd.close();
-		}
-		return DocumentBuilderHelper.getDocumentFromString(response.toString());
-	}
-
-	/**
-	 * Checks if a HTTP connection has a valid response (200 OK) 
-	 * @param connection HTTP Connection
-	 * @return true If the response is "HTTP/1.0 200 OK"
-	 * @return false In other case
-	 * @throws IOException if an error occurred connecting to the server.
-	 */
-	protected boolean isValidResponse(HttpURLConnection connection)
-			throws IOException {
-		return connection.getResponseCode() == HttpURLConnection.HTTP_OK
-				&& connection.getContentType().contains(TEXT_XML);
+	protected Document processResponse(String response) throws DocumentBuilderException{
+		return DocumentBuilderHelper.getDocumentFromString(response);
 	}
 
 	/**
@@ -187,7 +147,7 @@ public class GoogleEnhancer extends EnhancerAdapter implements Configurable {
 		Node node = null;
 
 		while ((node = it.nextNode()) != null) {
-			TagTO tag = new TagTO(node.getNodeValue(), provider,
+			TagTO tag = new TagTO(node.getNodeValue().trim(), provider,
 					request.getResource());
 			fillSuggestions(tag, googleRelevance);
 		}

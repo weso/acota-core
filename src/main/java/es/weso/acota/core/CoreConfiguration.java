@@ -61,7 +61,11 @@ public class CoreConfiguration implements Configuration {
 	protected String wordnetEnDict;
 
 	protected Double wordnetRelevance;
-
+	
+	protected Boolean memcachedEnabled;
+	protected String memcachedUrls;
+	protected int memcachedExpireTime;
+	
 	/**
 	 * Zero-argument default constructor.
 	 * 
@@ -81,6 +85,7 @@ public class CoreConfiguration implements Configuration {
 		loadOpenNlpEnhancerConfig();
 		loadWordnetEnhancerConfig();
 		loadGoogleEnhancerConfig();
+		loadMemcachedConfig();
 	}
 
 	public String getGoogleEncoding() {
@@ -306,6 +311,30 @@ public class CoreConfiguration implements Configuration {
 	public void setWordnetRelevance(Double wordnetRelevance) {
 		this.wordnetRelevance = wordnetRelevance;
 	}
+	
+	public Boolean getMemcachedEnabled() {
+		return memcachedEnabled;
+	}
+
+	public void setMemcachedEnabled(Boolean memcachedEnabled) {
+		this.memcachedEnabled = memcachedEnabled;
+	}
+
+	public String getMemcachedUrls() {
+		return memcachedUrls;
+	}
+
+	public void setMemcachedUrls(String memcachedUrls) {
+		this.memcachedUrls = memcachedUrls;
+	}
+	
+	public int getMemcachedExpireTime() {
+		return memcachedExpireTime;
+	}
+
+	public void setMemcachedExpireTime(int memcachedExpireTime) {
+		this.memcachedExpireTime = memcachedExpireTime;
+	}
 
 	/**
 	 * @see es.weso.acota.core.Configuration#loadsConfiguration()
@@ -415,6 +444,15 @@ public class CoreConfiguration implements Configuration {
 	private void loadWordnetEnhancerConfig() {
 		this.setWordnetEnDict(CONFIG.getString("wordnet.en.dict"));
 		this.setWordnetRelevance(CONFIG.getDouble("wordnet.relevance"));
+	}
+	
+	/**
+	 * Loads Memcached Configuration
+	 */
+	private void loadMemcachedConfig() {
+		this.setMemcachedEnabled(CONFIG.getBoolean("memcached.enabled", false));
+		this.setMemcachedUrls(CONFIG.getString("memcached.urls"));
+		this.setMemcachedExpireTime(CONFIG.getInt("memcached.expireTime"));
 	}
 
 }

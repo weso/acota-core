@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import com.cybozu.labs.langdetect.Detector;
 import com.cybozu.labs.langdetect.DetectorFactory;
@@ -36,7 +37,7 @@ public abstract class LanguageUtil {
 	public static String detect(String text) throws AcotaConfigurationException{
 		Detector detector = null;
 		
-		if(text.isEmpty())
+		if(text.isEmpty() || NumberUtils.isNumber(text))
 			return ISO_639_UNDEFINED;
 		try{
 			if(DetectorFactory.getLangList().isEmpty()){
@@ -46,7 +47,7 @@ public abstract class LanguageUtil {
 			detector.append(text);
 			return detector.detect();
 		}catch(LangDetectException e){
-			throw new AcotaConfigurationException("Failed langdetec initialization", e);
+			throw new AcotaConfigurationException("Failed langdetec initialization: "+text, e);
 		}	
 	}
 	
