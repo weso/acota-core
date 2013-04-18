@@ -1,4 +1,4 @@
-package es.weso.acota.core.utils;
+package es.weso.acota.core.utils.rest;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,6 +20,11 @@ import net.rubyeye.xmemcached.XMemcachedClientBuilder;
 import net.rubyeye.xmemcached.exception.MemcachedException;
 import net.rubyeye.xmemcached.utils.AddrUtil;
 
+/**
+ * 
+ * @author César Luis Alvargonzález
+ * @since 0.3.8
+ */
 public class MemcachedRESTClient implements Configurable{
 	
 	public static final String TEXT_XML = "text/xml";

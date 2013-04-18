@@ -1,7 +1,5 @@
 package es.weso.acota.core.business.enhancer;
 
-import static es.weso.acota.core.utils.LanguageUtil.ISO_639_SPANISH;
-
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -20,7 +18,9 @@ import es.weso.acota.core.business.enhancer.analyzer.tokenizer.TokenizerAnalyzer
 import es.weso.acota.core.entity.ProviderTO;
 import es.weso.acota.core.entity.TagTO;
 import es.weso.acota.core.exceptions.AcotaConfigurationException;
-import es.weso.acota.core.utils.LanguageUtil;
+import es.weso.acota.core.utils.lang.LanguageUtil;
+
+import static es.weso.acota.core.utils.lang.LanguageUtil.ISO_639_SPANISH;
 
 /**
  * TokenizerEnhancer is an {@link Enhancer} specialized in tokenizing, removing stop-words and

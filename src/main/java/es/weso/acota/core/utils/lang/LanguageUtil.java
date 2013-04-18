@@ -1,4 +1,4 @@
-package es.weso.acota.core.utils;
+package es.weso.acota.core.utils.lang;
 
 import java.io.IOException;
 import java.io.InputStream;

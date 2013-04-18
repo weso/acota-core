@@ -1,4 +1,4 @@
-package es.weso.acota.core.utils;
+package es.weso.acota.core.utils.documents;
 
 import java.io.File;
 import java.io.FileInputStream;

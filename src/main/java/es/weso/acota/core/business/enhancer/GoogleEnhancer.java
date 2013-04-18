@@ -2,8 +2,7 @@ package es.weso.acota.core.business.enhancer;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 import java.util.Map.Entry;
 
 import javax.xml.transform.TransformerException;
@@ -21,9 +20,10 @@ import es.weso.acota.core.entity.ProviderTO;
 import es.weso.acota.core.entity.TagTO;
 import es.weso.acota.core.exceptions.AcotaConfigurationException;
 import es.weso.acota.core.exceptions.DocumentBuilderException;
-import es.weso.acota.core.utils.DocumentBuilderHelper;
-import es.weso.acota.core.utils.LanguageUtil;
-import es.weso.acota.core.utils.MemcachedRESTClient;
+import es.weso.acota.core.utils.AcotaUtils;
+import es.weso.acota.core.utils.documents.DocumentBuilderHelper;
+import es.weso.acota.core.utils.lang.LanguageUtil;
+import es.weso.acota.core.utils.rest.MemcachedRESTClient;
 
 /**
  * GoogleEnhancer is an {@link Enhancer} specialized in making calls to Google 
@@ -40,6 +40,8 @@ public class GoogleEnhancer extends EnhancerAdapter implements Configurable {
 	protected String googleUrl;
 	protected String googleEncoding;
 	
+	protected int googleLimit;
+	protected int googlePercentile ;
 	protected double googleRelevance;
 	
 	protected MemcachedRESTClient restClient;
@@ -77,17 +79,21 @@ public class GoogleEnhancer extends EnhancerAdapter implements Configurable {
 		this.googleUrl = configuration.getGoogleUrl();
 		this.googleEncoding = configuration.getGoogleEncoding();
 		this.googleRelevance = configuration.getGoogleRelevance();
+		this.googlePercentile = configuration.getGooglePercentile();
+		this.googleLimit = configuration.getGoogleLimit();
 		this.restClient = MemcachedRESTClient.getInstance(configuration);
 	}
 	
 	@Override
 	protected void execute() throws Exception {	
-		Set<Entry<String, TagTO>> backupSet = new HashSet<Entry<String, TagTO>>();
-		for (Entry<String, TagTO> label : tags.entrySet()) {
-			backupSet.add(label);
-		}
-		for (Entry<String, TagTO> label : backupSet) {
-			String result = restClient.execute(generateURL(label.getKey()), 
+		List<Entry<String, TagTO>> sortedTags = 
+				AcotaUtils.sortTags(AcotaUtils.cloneTags(tags));
+		
+		long percentileLimit = Math.round(sortedTags.size() * (googlePercentile/100d));
+		long currentLimit = googleLimit < percentileLimit ? googleLimit : percentileLimit;
+		
+		for (int i = 0; i < currentLimit; i++) {
+			String result = restClient.execute(generateURL(sortedTags.get(i).getKey()), 
 					MemcachedRESTClient.APPLICATION_XML, googleEncoding);
 			Document document = processResponse(result);
 			processDocument(document);

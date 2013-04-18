@@ -16,7 +16,6 @@ import es.weso.acota.core.exceptions.AcotaConfigurationException;
  * This class adapts the interface TokenizerAnalyzer, implementing common
  * operations for derived classes
  * @author César Luis Alvargonzález
- *
  */
 public abstract class TokenizerAnalyzerAdapter implements TokenizerAnalyzer{
 	

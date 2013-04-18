@@ -26,9 +26,11 @@ public class CoreConfiguration implements Configuration {
 	protected String googleEncoding;
 
 	protected Double googleRelevance;
+	protected int googlePercentile;
+	protected int googleLimit;
 	protected String googleUrl;
+	
 	protected Double luceneLabelRelevance;
-
 	protected Double luceneTermRelevance;
 	
 	protected String openNlpEnPosBin;
@@ -94,6 +96,22 @@ public class CoreConfiguration implements Configuration {
 
 	public Double getGoogleRelevance() {
 		return googleRelevance;
+	}
+
+	public int getGooglePercentile() {
+		return googlePercentile;
+	}
+
+	public void setGooglePercentile(int googlePercentile) {
+		this.googlePercentile = googlePercentile;
+	}
+
+	public int getGoogleLimit() {
+		return googleLimit;
+	}
+
+	public void setGoogleLimit(int googleLimit) {
+		this.googleLimit = googleLimit;
 	}
 
 	public String getGoogleUrl() {
@@ -375,6 +393,8 @@ public class CoreConfiguration implements Configuration {
 		this.setGoogleUrl(CONFIG.getString("google.url"));
 		this.setGoogleEncoding(CONFIG.getString("google.encoding"));
 		this.setGoogleRelevance(CONFIG.getDouble("google.relevance"));
+		this.setGooglePercentile(CONFIG.getInt("google.percentile"));
+		this.setGoogleLimit(CONFIG.getInt("google.limit"));
 	}
 
 	/**
