@@ -25,22 +25,44 @@ public class MemcachedRESTClient implements Configurable{
 	public static final String TEXT_XML = "text/xml";
 	public static final String APPLICATION_XML = "application/xml";
 	
-	private static Logger log = Logger.getLogger(MemcachedRESTClient.class);
+	protected static Logger log;
+	private static MemcachedRESTClient MEMCACHED_REST_CLIENT;
 	
-	private MemcachedClientBuilder builder;
-	private MemcachedClient memcachedClient;
+	protected MemcachedClientBuilder builder;
+	protected MemcachedClient memcachedClient;
 	
-	private String memcachedUrls;
-	private int memcachedExpireTime;
-	private boolean memcachedEnabled;
+	protected String memcachedUrls;
+	protected int memcachedExpireTime;
+	protected boolean memcachedEnabled;
 	
 	/**
 	 * Default Constructor
 	 * @param configuration
 	 * @throws AcotaConfigurationException
 	 */
-	public MemcachedRESTClient(CoreConfiguration configuration) throws AcotaConfigurationException{
+	private MemcachedRESTClient(CoreConfiguration configuration) throws AcotaConfigurationException{
+		MemcachedRESTClient.log = Logger.getLogger(MemcachedRESTClient.class);
 		loadConfiguration(configuration);
+	}
+	
+	@Override
+	protected void finalize() throws Throwable {
+		try{
+			if(memcachedClient!= null && memcachedClient.isShutdown()){
+				memcachedClient.shutdown();
+			}
+		}catch(Throwable T){
+			throw T;
+		}finally{
+			super.finalize();
+		}
+	}
+	
+	public static MemcachedRESTClient getInstance(CoreConfiguration configuration) throws AcotaConfigurationException{
+		if(MEMCACHED_REST_CLIENT==null){
+			MemcachedRESTClient.MEMCACHED_REST_CLIENT = new MemcachedRESTClient(configuration);
+		}
+		return MEMCACHED_REST_CLIENT;
 	}
 
 	@Override
@@ -52,7 +74,7 @@ public class MemcachedRESTClient implements Configurable{
 		if(memcachedEnabled){
 			try{
 				this.builder = new XMemcachedClientBuilder(AddrUtil.getAddresses(memcachedUrls));
-				if(memcachedClient!=null){
+				if(memcachedClient!=null && memcachedClient.isShutdown()){
 					memcachedClient.shutdown();
 				}
 				this.memcachedClient = builder.build();
@@ -101,7 +123,7 @@ public class MemcachedRESTClient implements Configurable{
 	 * @throws MemcachedException
 	 * @throws RESTException
 	 */
-	private String getResultFromCache(String url, String accept, String encoding) throws TimeoutException,
+	protected String getResultFromCache(String url, String accept, String encoding) throws TimeoutException,
 			InterruptedException, MemcachedException, RESTException {
 		String key = "rest_" + url.hashCode();
 		String response = memcachedClient.get(key);
@@ -120,7 +142,7 @@ public class MemcachedRESTClient implements Configurable{
 	 * @return
 	 * @throws IOException
 	 */
-	private String treatCacheException(String url, String accept, String encoding, Exception e) throws IOException {
+	protected String treatCacheException(String url, String accept, String encoding, Exception e) throws IOException {
 		log.error("An error occured querying the cache. "
 				+ "Querying SPARQL endpoint", e);
 		return makeRESTCall(url, accept, encoding);
@@ -138,7 +160,7 @@ public class MemcachedRESTClient implements Configurable{
 	 * @throws MemcachedException
 	 * @throws RESTException
 	 */
-	private String queryEndpointAndStore(String key, String url, String accept, String encoding)
+	protected String queryEndpointAndStore(String key, String url, String accept, String encoding)
 			throws TimeoutException, InterruptedException, MemcachedException, RESTException {
 		String response = "";
 		try {

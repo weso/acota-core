@@ -77,7 +77,7 @@ public class GoogleEnhancer extends EnhancerAdapter implements Configurable {
 		this.googleUrl = configuration.getGoogleUrl();
 		this.googleEncoding = configuration.getGoogleEncoding();
 		this.googleRelevance = configuration.getGoogleRelevance();
-		this.restClient = new MemcachedRESTClient(configuration);
+		this.restClient = MemcachedRESTClient.getInstance(configuration);
 	}
 	
 	@Override
