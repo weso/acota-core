@@ -125,7 +125,8 @@ public class LuceneEnhancer extends EnhancerAdapter implements Configurable {
 	protected void extractTerms(String title, String text, double relevance)
 			throws IOException, AcotaConfigurationException {
 
-		Analyzer analyzer = loadAnalyzer(text);
+		String language = LanguageUtil.detect(text);
+		Analyzer analyzer = loadAnalyzer(language);
 
 		logger.debug("Get tokens of texts");
 		TokenStream stream = analyzer.tokenStream(title, new StringReader(
@@ -135,7 +136,7 @@ public class LuceneEnhancer extends EnhancerAdapter implements Configurable {
 
 		while (stream.incrementToken()) {
 			logger.debug("Add tag to suggestions");
-			TagTO tag = createTag(termAttribute);
+			TagTO tag = createTag(termAttribute, language);
 			fillSuggestions(tag, relevance);
 		}
 	}
@@ -143,24 +144,25 @@ public class LuceneEnhancer extends EnhancerAdapter implements Configurable {
 	/**
 	 * Creates and adds a new tag to the suggest tags set
 	 * @param attribute Label's attribute
+	 * @param language Tag Language
 	 * @return Created tag
 	 */
-	protected TagTO createTag(CharTermAttribute attribute) {
+	protected TagTO createTag(CharTermAttribute attribute, String language) {
 		TagTO tag = new TagTO();
 		tag.setLabel(attribute.toString());
 		tag.setProvider(provider);
 		tag.setTagged(request.getResource());
+		tag.setLang(language);
 		return tag;
 	}
 
 	/**
 	 * Loads a language analyzer (English, Spanish or Default)
-	 * @param text Text to analyze
+	 * @param language Language of the analyzer to load
 	 * @return Lucene's {@link Analyzer}
 	 * @throws AcotaConfigurationException 
 	 */
-	protected Analyzer loadAnalyzer(String text) throws AcotaConfigurationException {
-		String language = LanguageUtil.detect(text);
+	protected Analyzer loadAnalyzer(String language) throws AcotaConfigurationException {
 		Analyzer analyzer = null;
 		if (language.equals(ISO_639_SPANISH)) {
 			analyzer = SpanishStopAnalyzer.getInstance();

@@ -202,7 +202,8 @@ public class TokenizerEnhancer extends EnhancerAdapter implements Configurable {
 	 */
 	protected void extractTerms(String title, String text, double relevance)
 			throws IOException, AcotaConfigurationException {
-		this.currentTokenizerAnalyzer = loadAnalyzer(text);
+		String language = LanguageUtil.detect(text);
+		this.currentTokenizerAnalyzer = loadAnalyzer(language);
 		
 		String[] sentences = currentTokenizerAnalyzer.sentDetect(text);
 		auxiliar.clear();
@@ -294,8 +295,10 @@ public class TokenizerEnhancer extends EnhancerAdapter implements Configurable {
 		int min = calculateMin(tags);
 		int max = calculateMax(tags);
 		if (min <= max && min >= 0 && max >= 0) {
-			TagTO tag = new TagTO(StringUtils.join(
-					Arrays.copyOfRange(tokenizedText, min, max + 1), " "),
+			String label = StringUtils.join(
+					Arrays.copyOfRange(tokenizedText, min, max + 1), " ");
+			TagTO tag = new TagTO(label,
+					LanguageUtil.detect(label),
 					provider, request.getResource());
 			fillSuggestions(tag, relevance);
 		}
@@ -333,13 +336,12 @@ public class TokenizerEnhancer extends EnhancerAdapter implements Configurable {
 
 	/**
 	 * Loads a language analyzer (English or Spanish)
-	 * @param text Text to analyze
+	 * @param language Language of the analyzer to load
 	 * @return Tokenizer's {@link Analyzer}
 	 * @throws AcotaConfigurationException Any exception that occurs while initializing 
 	 * a Configuration object 
 	 */
-	protected TokenizerAnalyzer loadAnalyzer(String text) throws AcotaConfigurationException {
-		String language = LanguageUtil.detect(text);
+	protected TokenizerAnalyzer loadAnalyzer(String language) throws AcotaConfigurationException {
 		TokenizerAnalyzer analyzer = null;
 		if (language.equals(ISO_639_SPANISH)) {
 			if(spanishTokenizerAnalyzer==null)

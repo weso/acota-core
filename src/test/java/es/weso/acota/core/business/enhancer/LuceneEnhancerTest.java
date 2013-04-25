@@ -22,6 +22,7 @@ import es.weso.acota.core.entity.ResourceTO;
 import es.weso.acota.core.entity.SuggestionTO;
 import es.weso.acota.core.entity.TagTO;
 import es.weso.acota.core.exceptions.AcotaConfigurationException;
+import es.weso.acota.core.utils.lang.LanguageUtil;
 
 public class LuceneEnhancerTest{
 
@@ -103,19 +104,19 @@ public class LuceneEnhancerTest{
 	@Test
 	public void loadAnalyzerEs() throws AcotaConfigurationException {
 		assertTrue(SpanishStopAnalyzer.class.isInstance(
-				luceneEnhancer.loadAnalyzer("Esto es Español")));
+				luceneEnhancer.loadAnalyzer(LanguageUtil.ISO_639_SPANISH)));
 	}
 
 	@Test
 	public void loadAnalyzerEn() throws AcotaConfigurationException {
 		assertTrue(EnglishStopAnalyzer.class.isInstance(
-				luceneEnhancer.loadAnalyzer("This is English")));
+				luceneEnhancer.loadAnalyzer(LanguageUtil.ISO_639_ENGLISH)));
 	}
 
 	@Test
 	public void loadAnalyzerOther() throws AcotaConfigurationException {
 		assertTrue(DefaultStopAnalyzer.class.isInstance(
-				luceneEnhancer.loadAnalyzer("Das ist Deutsche")));
+				luceneEnhancer.loadAnalyzer(LanguageUtil.ISO_639_UNDEFINED)));
 	}
 	
 	
@@ -143,7 +144,8 @@ public class LuceneEnhancerTest{
 		
 		Map<String, TagTO> tags = new HashMap<String, TagTO>();
 		
-		TagTO tag = new TagTO("español", LuceneEnhancer.provider,
+		TagTO tag = new TagTO("español", LanguageUtil.ISO_639_SPANISH,
+				LuceneEnhancer.provider,
 				suggest.getResource());
 		tag.setValue(1.0d);
 		tags.put(tag.getLabel(),tag);
@@ -167,7 +169,9 @@ public class LuceneEnhancerTest{
 		
 		Map<String, TagTO> tags = new HashMap<String, TagTO>();
 		
-		TagTO tag = new TagTO("español", LuceneEnhancer.provider,
+		TagTO tag = new TagTO("español", 
+				LanguageUtil.ISO_639_SPANISH,
+				LuceneEnhancer.provider,
 				suggest.getResource());
 		tag.setValue(1.0d);
 		tags.put(tag.getLabel(),tag);
@@ -210,8 +214,8 @@ public class LuceneEnhancerTest{
 		
 		Map<String, TagTO> tags = new HashMap<String, TagTO>();
 		
-		TagTO tag = new TagTO("español", LuceneEnhancer.provider,
-				suggest.getResource());
+		TagTO tag = new TagTO("español", LanguageUtil.ISO_639_SPANISH,
+				LuceneEnhancer.provider, suggest.getResource());
 		tag.setValue(1.0d);
 		tags.put(tag.getLabel(),tag);
 		
@@ -235,8 +239,8 @@ public class LuceneEnhancerTest{
 		
 		Map<String, TagTO> tags = new HashMap<String, TagTO>();
 		
-		TagTO tag = new TagTO("español", LuceneEnhancer.provider,
-				suggest.getResource());
+		TagTO tag = new TagTO("español", LanguageUtil.ISO_639_SPANISH,
+				LuceneEnhancer.provider, suggest.getResource());
 		tag.setValue(1.0d);
 		tags.put(tag.getLabel(),tag);
 		
@@ -273,8 +277,8 @@ public class LuceneEnhancerTest{
 		SuggestionTO suggest = initializeSuggest();
 		
 		Map<String, TagTO> tags = new HashMap<String, TagTO>();
-		TagTO tag = new TagTO("español", LuceneEnhancer.provider,
-				suggest.getResource());
+		TagTO tag = new TagTO("español", LanguageUtil.ISO_639_SPANISH,
+				LuceneEnhancer.provider, suggest.getResource());
 		tag.setValue(3.0d);
 		tags.put(tag.getLabel(), tag);
 		
@@ -290,16 +294,16 @@ public class LuceneEnhancerTest{
 		SuggestionTO suggest = initializeSuggest();
 		
 		Map<String, TagTO> tags = new HashMap<String, TagTO>();
-		TagTO tag = new TagTO("foo", LuceneEnhancer.provider,
-				suggest.getResource());
+		TagTO tag = new TagTO("foo", LanguageUtil.ISO_639_SPANISH,
+				LuceneEnhancer.provider, suggest.getResource());
 		tag.setValue(1);
 		tags.put(tag.getLabel(), tag);
 		
 		luceneEnhancer.suggest = suggest;
 		luceneEnhancer.tags = tags;
 		
-		tag = new TagTO("foo", LuceneEnhancer.provider,
-				suggest.getResource());
+		tag = new TagTO("foo", LanguageUtil.ISO_639_SPANISH,
+				LuceneEnhancer.provider, suggest.getResource());
 		
 		luceneEnhancer.fillSuggestions(tag,1d);
 		
@@ -315,8 +319,8 @@ public class LuceneEnhancerTest{
 		luceneEnhancer.suggest = suggest;
 		luceneEnhancer.tags = tags;
 		
-		TagTO tag = new TagTO("foo", LuceneEnhancer.provider,
-				suggest.getResource());
+		TagTO tag = new TagTO("foo", LanguageUtil.ISO_639_SPANISH,
+				LuceneEnhancer.provider, suggest.getResource());
 		
 		luceneEnhancer.fillSuggestions(tag,1d);
 		
@@ -328,10 +332,10 @@ public class LuceneEnhancerTest{
 		CharTermAttributeImpl attribute = new CharTermAttributeImpl();
 		attribute.append("foo");
 		SuggestionTO suggest = initializeSuggest();
-		TagTO tag = new TagTO("foo", LuceneEnhancer.provider,
-				suggest.getResource());
+		TagTO tag = new TagTO("foo", LanguageUtil.ISO_639_SPANISH,
+				LuceneEnhancer.provider, suggest.getResource());
 
-		assertEquals(tag, luceneEnhancer.createTag(attribute));
+		assertEquals(tag, luceneEnhancer.createTag(attribute, LanguageUtil.ISO_639_SPANISH));
 	}
 	
 	private SuggestionTO initializeSuggest() throws Exception {

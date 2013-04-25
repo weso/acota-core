@@ -1,5 +1,6 @@
 package es.weso.acota.core.business.enhancer;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.List;
@@ -20,6 +21,7 @@ import es.weso.acota.core.entity.ProviderTO;
 import es.weso.acota.core.entity.TagTO;
 import es.weso.acota.core.exceptions.AcotaConfigurationException;
 import es.weso.acota.core.exceptions.DocumentBuilderException;
+import es.weso.acota.core.exceptions.RESTException;
 import es.weso.acota.core.utils.AcotaUtils;
 import es.weso.acota.core.utils.documents.DocumentBuilderHelper;
 import es.weso.acota.core.utils.lang.LanguageUtil;
@@ -93,26 +95,35 @@ public class GoogleEnhancer extends EnhancerAdapter implements Configurable {
 		long currentLimit = googleLimit < percentileLimit ? googleLimit : percentileLimit;
 		
 		for (int i = 0; i < currentLimit; i++) {
-			String result = restClient.execute(generateURL(sortedTags.get(i).getKey()), 
-					MemcachedRESTClient.APPLICATION_XML, googleEncoding);
-			Document document = processResponse(result);
-			processDocument(document);
+			temp(sortedTags, i);
 		}
+	}
+
+	private void temp(List<Entry<String, TagTO>> sortedTags, int i)
+			throws AcotaConfigurationException, IOException, RESTException,
+			UnsupportedEncodingException, DocumentBuilderException,
+			TransformerException {
+		String label = sortedTags.get(i).getKey();
+		String language = LanguageUtil.detect(label);
+		String result = restClient.execute(generateURL(label, language), 
+				MemcachedRESTClient.APPLICATION_XML, googleEncoding);
+		Document document = processResponse(result);
+		processDocument(document, language);
 	}
 
 	/**
 	 * Generates the Google (Auto)Complete URL
 	 * @param label Label to generate the Google (Auto)Complete URL
+	 * @param language Label language
 	 * @return URL of the Google (Auto)Complete related to the label
 	 * @throws UnsupportedEncodingException The Character Encoding is not supported.
 	 * @throws AcotaConfigurationException Any exception that occurs 
 	 * while initializing Configuration object
 	 */
-	private String generateURL(String label)
+	private String generateURL(String label, String language)
 			throws UnsupportedEncodingException, AcotaConfigurationException {
 		StringBuilder url = new StringBuilder(googleUrl)
 			.append(URLEncoder.encode(label, "utf8"));
-		String language = LanguageUtil.detect(label);
 		if(language.equals(LanguageUtil.ISO_639_UNDEFINED)){
 			url.append("&hl=").append(LanguageUtil.detect(label));
 		}
@@ -148,12 +159,12 @@ public class GoogleEnhancer extends EnhancerAdapter implements Configurable {
 	 * @throws TransformerException If happens an exceptional condition that
 	 * occurred during the transformation process.
 	 */
-	protected void processDocument(Document result) throws TransformerException {
+	protected void processDocument(Document result, String language) throws TransformerException {
 		NodeIterator it = XPathAPI.selectNodeIterator(result, "//suggestion/@data");
 		Node node = null;
 
 		while ((node = it.nextNode()) != null) {
-			TagTO tag = new TagTO(node.getNodeValue().trim(), provider,
+			TagTO tag = new TagTO(node.getNodeValue().trim(), language, provider,
 					request.getResource());
 			fillSuggestions(tag, googleRelevance);
 		}

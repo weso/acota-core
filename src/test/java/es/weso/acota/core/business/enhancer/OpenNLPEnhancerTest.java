@@ -24,6 +24,7 @@ import es.weso.acota.core.entity.ResourceTO;
 import es.weso.acota.core.entity.SuggestionTO;
 import es.weso.acota.core.entity.TagTO;
 import es.weso.acota.core.exceptions.AcotaConfigurationException;
+import es.weso.acota.core.utils.lang.LanguageUtil;
 
 public class OpenNLPEnhancerTest {
 	
@@ -101,8 +102,8 @@ public class OpenNLPEnhancerTest {
 		SuggestionTO suggest = initializeSuggest();
 		
 		Map<String, TagTO> tags = new HashMap<String, TagTO>();
-		TagTO tag = new TagTO("prueba", LuceneEnhancer.provider,
-				suggest.getResource());
+		TagTO tag = new TagTO("prueba", LanguageUtil.ISO_639_SPANISH,
+				LuceneEnhancer.provider, suggest.getResource());
 		tag.setValue(4.0d);
 		tags.put(tag.getLabel(), tag);
 		
@@ -130,13 +131,17 @@ public class OpenNLPEnhancerTest {
 		SuggestionTO suggest = initializeSuggest();
 		
 		Map<String, TagTO> tags = new HashMap<String, TagTO>();
-		TagTO tag1 = new TagTO("eso", LuceneEnhancer.provider,suggest.getResource());
+		TagTO tag1 = new TagTO("eso", LanguageUtil.ISO_639_SPANISH,
+				LuceneEnhancer.provider, suggest.getResource());
 		tag1.setValue(2.0);
-		TagTO tag2 = new TagTO("tu", LuceneEnhancer.provider,suggest.getResource());
+		TagTO tag2 = new TagTO("tu", LanguageUtil.ISO_639_SPANISH,
+				LuceneEnhancer.provider, suggest.getResource());
 		tag2.setValue(2.0);
-		TagTO tag3 = new TagTO("comer", LuceneEnhancer.provider,suggest.getResource());
+		TagTO tag3 = new TagTO("comer", LanguageUtil.ISO_639_SPANISH,
+				LuceneEnhancer.provider, suggest.getResource());
 		tag3.setValue(2.0);
-		TagTO tag4 = new TagTO("uno", LuceneEnhancer.provider,suggest.getResource());
+		TagTO tag4 = new TagTO("uno", LanguageUtil.ISO_639_SPANISH,
+				LuceneEnhancer.provider, suggest.getResource());
 		tag4.setValue(2.0);
 		
 		tags.put(tag1.getLabel(), tag1);
@@ -162,8 +167,8 @@ public class OpenNLPEnhancerTest {
 		SuggestionTO suggest = initializeSuggest();
 		
 		Map<String, TagTO> tags = new HashMap<String, TagTO>();
-		TagTO tag = new TagTO("perro", LuceneEnhancer.provider,
-				suggest.getResource());
+		TagTO tag = new TagTO("perro",LanguageUtil.ISO_639_SPANISH,
+				LuceneEnhancer.provider, suggest.getResource());
 		tag.setValue(2.0);
 		tags.put(tag.getLabel(), tag);
 		
@@ -182,13 +187,17 @@ public class OpenNLPEnhancerTest {
 		SuggestionTO suggest = initializeSuggest();
 		
 		Map<String, TagTO> tags = new HashMap<String, TagTO>();
-		TagTO tag1 = new TagTO("eso", LuceneEnhancer.provider,suggest.getResource());
+		TagTO tag1 = new TagTO("eso", LanguageUtil.ISO_639_SPANISH,
+				LuceneEnhancer.provider,suggest.getResource());
 		tag1.setValue(2.0);
-		TagTO tag2 = new TagTO("perro", LuceneEnhancer.provider,suggest.getResource());
+		TagTO tag2 = new TagTO("perro", LanguageUtil.ISO_639_SPANISH,
+				LuceneEnhancer.provider,suggest.getResource());
 		tag2.setValue(2.0);
-		TagTO tag3 = new TagTO("comer", LuceneEnhancer.provider,suggest.getResource());
+		TagTO tag3 = new TagTO("comer", LanguageUtil.ISO_639_SPANISH,
+				LuceneEnhancer.provider,suggest.getResource());
 		tag3.setValue(2.0);
-		TagTO tag4 = new TagTO("uno", LuceneEnhancer.provider,suggest.getResource());
+		TagTO tag4 = new TagTO("uno", LanguageUtil.ISO_639_SPANISH,
+				LuceneEnhancer.provider,suggest.getResource());
 		tag4.setValue(2.0);
 		
 		tags.put(tag1.getLabel(), tag1);
@@ -223,8 +232,8 @@ public class OpenNLPEnhancerTest {
 		SuggestionTO suggest = initializeSuggest();
 		
 		Map<String, TagTO> tags = new HashMap<String, TagTO>();
-		TagTO tag = new TagTO("esos", LuceneEnhancer.provider,
-				suggest.getResource());
+		TagTO tag = new TagTO("esos", LanguageUtil.ISO_639_SPANISH,
+				LuceneEnhancer.provider, suggest.getResource());
 		tag.setValue(1.0);
 		tags.put(tag.getLabel(), tag);
 		
@@ -241,8 +250,8 @@ public class OpenNLPEnhancerTest {
 		SuggestionTO suggest = initializeSuggest();
 		
 		Map<String, TagTO> tags = new HashMap<String, TagTO>();
-		TagTO tag = new TagTO("eso", LuceneEnhancer.provider,
-				suggest.getResource());
+		TagTO tag = new TagTO("eso", LanguageUtil.ISO_639_SPANISH,
+				LuceneEnhancer.provider, suggest.getResource());
 		tag.setValue(1.0);
 		tags.put(tag.getLabel(), tag);
 		
@@ -259,8 +268,8 @@ public class OpenNLPEnhancerTest {
 		SuggestionTO suggest = initializeSuggest();
 		
 		Map<String, TagTO> tags = new HashMap<String, TagTO>();
-		TagTO tag = new TagTO("yo", LuceneEnhancer.provider,
-				suggest.getResource());
+		TagTO tag = new TagTO("yo", LanguageUtil.ISO_639_SPANISH,
+				LuceneEnhancer.provider, suggest.getResource());
 		tag.setValue(1.0);
 		tags.put(tag.getLabel(), tag);
 		
@@ -277,8 +286,8 @@ public class OpenNLPEnhancerTest {
 		SuggestionTO suggest = initializeSuggest();
 		
 		Map<String, TagTO> tags = new HashMap<String, TagTO>();
-		TagTO tag = new TagTO("yo", LuceneEnhancer.provider,
-				suggest.getResource());
+		TagTO tag = new TagTO("yo", LanguageUtil.ISO_639_SPANISH,
+				LuceneEnhancer.provider, suggest.getResource());
 		tag.setValue(1.0);
 		tags.put(tag.getLabel(), tag);
 		
@@ -297,8 +306,8 @@ public class OpenNLPEnhancerTest {
 		SuggestionTO suggest = initializeSuggest();
 		
 		Map<String, TagTO> tags = new HashMap<String, TagTO>();
-		TagTO tag = new TagTO("comer", LuceneEnhancer.provider,
-				suggest.getResource());
+		TagTO tag = new TagTO("comer", LanguageUtil.ISO_639_SPANISH,
+				LuceneEnhancer.provider, suggest.getResource());
 		tag.setValue(2.0);
 		tags.put(tag.getLabel(), tag);
 		
@@ -315,8 +324,8 @@ public class OpenNLPEnhancerTest {
 		SuggestionTO suggest = initializeSuggest();
 		
 		Map<String, TagTO> tags = new HashMap<String, TagTO>();
-		TagTO tag = new TagTO("comer", LuceneEnhancer.provider,
-				suggest.getResource());
+		TagTO tag = new TagTO("comer", LanguageUtil.ISO_639_SPANISH,
+				LuceneEnhancer.provider, suggest.getResource());
 		tag.setValue(2.0);
 		tags.put(tag.getLabel(), tag);
 		
@@ -336,8 +345,8 @@ public class OpenNLPEnhancerTest {
 		SuggestionTO suggest = initializeSuggest();
 		
 		Map<String, TagTO> tags = new HashMap<String, TagTO>();
-		TagTO tag = new TagTO("uno", LuceneEnhancer.provider,
-				suggest.getResource());
+		TagTO tag = new TagTO("uno", LanguageUtil.ISO_639_SPANISH,
+				LuceneEnhancer.provider, suggest.getResource());
 		tag.setValue(1.0);
 		tags.put(tag.getLabel(), tag);
 		
@@ -354,8 +363,8 @@ public class OpenNLPEnhancerTest {
 		SuggestionTO suggest = initializeSuggest();
 		
 		Map<String, TagTO> tags = new HashMap<String, TagTO>();
-		TagTO tag = new TagTO("uno", LuceneEnhancer.provider,
-				suggest.getResource());
+		TagTO tag = new TagTO("uno", LanguageUtil.ISO_639_SPANISH,
+				LuceneEnhancer.provider,suggest.getResource());
 		tag.setValue(1.0);
 		tags.put(tag.getLabel(), tag);
 		

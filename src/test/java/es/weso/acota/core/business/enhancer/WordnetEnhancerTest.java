@@ -21,6 +21,7 @@ import es.weso.acota.core.entity.ResourceTO;
 import es.weso.acota.core.entity.SuggestionTO;
 import es.weso.acota.core.entity.TagTO;
 import es.weso.acota.core.exceptions.AcotaConfigurationException;
+import es.weso.acota.core.utils.lang.LanguageUtil;
 
 public class WordnetEnhancerTest {
 	
@@ -84,8 +85,8 @@ public class WordnetEnhancerTest {
 		SuggestionTO suggest = initializeSuggest();
 		
 		Map<String, TagTO> tags = new HashMap<String, TagTO>();
-		TagTO tag = new TagTO("open", LuceneEnhancer.provider,
-				suggest.getResource());
+		TagTO tag = new TagTO("open", LanguageUtil.ISO_639_SPANISH,
+				LuceneEnhancer.provider, suggest.getResource());
 		tag.setValue(4.0);
 		tags.put(tag.getLabel(), tag);
 		

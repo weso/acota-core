@@ -16,10 +16,10 @@
   <classpathentry kind="var" path="M2_REPO/commons-configuration/commons-configuration/1.9/commons-configuration-1.9.jar"/>
   <classpathentry kind="var" path="M2_REPO/commons-lang/commons-lang/2.6/commons-lang-2.6.jar"/>
   <classpathentry kind="var" path="M2_REPO/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/apache/lucene/lucene-core/3.6.0/lucene-core-3.6.0.jar"/>
   <classpathentry kind="var" path="M2_REPO/commons-io/commons-io/2.4/commons-io-2.4.jar"/>
   <classpathentry kind="var" path="M2_REPO/com/cybozu/labs/langdetect/1.1-20120112/langdetect-1.1-20120112.jar"/>
   <classpathentry kind="var" path="M2_REPO/net/arnx/jsonic/1.2.7/jsonic-1.2.7.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/lucene/lucene-core/3.6.0/lucene-core-3.6.0.jar"/>
   <classpathentry kind="var" path="M2_REPO/opennlp/opennlp-tools/1.4.3/opennlp-tools-1.4.3.jar"/>
   <classpathentry kind="var" path="M2_REPO/opennlp/maxent/2.5.2/maxent-2.5.2.jar"/>
   <classpathentry kind="var" path="M2_REPO/trove/trove/1.0.2/trove-1.0.2.jar"/>

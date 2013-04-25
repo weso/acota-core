@@ -129,7 +129,7 @@ public class WordnetEnhancer extends EnhancerAdapter implements Configurable {
 				if(!cleanWord.equals(label)){
 					TagTO tag = tags.get(cleanWord);
 					if(tag == null)
-						tag = new TagTO(cleanWord, provider, suggest.getResource());
+						tag = new TagTO(cleanWord, "en", provider, suggest.getResource());
 					fillSuggestions(tag, wordnetRelevance);
 				}
 			}
