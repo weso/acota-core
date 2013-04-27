@@ -25,6 +25,11 @@ public class DefaultStopAnalyzer extends Analyzer {
 	 */
 	public DefaultStopAnalyzer(){}
 	
+	/**
+	 * Gets an instance of {@link DefaultStopAnalyzer }, 
+	 * in the case it does not exists, it will create one,
+	 * @return The {@link DefaultStopAnalyzer }'s instance
+	 */
 	public static DefaultStopAnalyzer getInstance(){
 		if(DEFAULT_STOP_ANALYZER==null)
 			DefaultStopAnalyzer.DEFAULT_STOP_ANALYZER = new DefaultStopAnalyzer();

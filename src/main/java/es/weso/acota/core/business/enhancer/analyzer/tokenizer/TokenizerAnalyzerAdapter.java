@@ -146,6 +146,7 @@ public abstract class TokenizerAnalyzerAdapter implements TokenizerAnalyzer{
 	
 	/**
 	 * Lazy Load the configuration required by the Analyzer
+	 * @throws AcotaConfigurationException Any exception that occurs 
 	 */
 	protected void lazyInitialization() throws AcotaConfigurationException {
 		if(modified){
@@ -158,6 +159,7 @@ public abstract class TokenizerAnalyzerAdapter implements TokenizerAnalyzer{
 	
 	/**
 	 * Lazy Load all OpenNLP Files required by the Analyzer
+	 * @throws AcotaConfigurationException Any exception that occurs
 	 */
 	protected abstract void lazyOpenNlpInitialization() throws AcotaConfigurationException;
 }

@@ -42,8 +42,9 @@ public class MemcachedRESTClient implements Configurable{
 	
 	/**
 	 * Default Constructor
-	 * @param configuration
-	 * @throws AcotaConfigurationException
+	 * @param configuration acota-core's configuration class
+	 * @throws AcotaConfigurationException Any exception that occurs while initializing 
+	 * a Configuration object
 	 */
 	private MemcachedRESTClient(CoreConfiguration configuration) throws AcotaConfigurationException{
 		MemcachedRESTClient.log = Logger.getLogger(MemcachedRESTClient.class);
@@ -63,6 +64,14 @@ public class MemcachedRESTClient implements Configurable{
 		}
 	}
 	
+	/**
+	 * Gets an instance of {@link MemcachedRESTClient}, 
+	 * in the case it does not exists, it will create one,
+	 * @param configuration acota-core's configuration class
+	 * @return The {@link MemcachedRESTClient}'s instance
+	 * @throws AcotaConfigurationException Any exception that occurs while initializing 
+	 * a Configuration object
+	 */
 	public static MemcachedRESTClient getInstance(CoreConfiguration configuration) throws AcotaConfigurationException{
 		if(MEMCACHED_REST_CLIENT==null){
 			MemcachedRESTClient.MEMCACHED_REST_CLIENT = new MemcachedRESTClient(configuration);
@@ -92,10 +101,10 @@ public class MemcachedRESTClient implements Configurable{
 	
 	/**
 	 * 
-	 * @param url
-	 * @param accept
-	 * @param encoding
-	 * @return
+	 * @param url URL of the REST Call
+	 * @param accept Format Expected  by the REST CALL
+	 * @param encoding Encoding Expected by the REST CALL
+	 * @return Response as plain text (RAW)
 	 * @throws IOException
 	 * @throws RESTException
 	 */
@@ -118,11 +127,12 @@ public class MemcachedRESTClient implements Configurable{
 	}
 	
 	/**
-	 * 
-	 * @param url
-	 * @param accept
-	 * @param encoding
-	 * @return
+	 * Retrieves the results from the cache, if the file is not available,
+	 * it will perform the REST call
+	 * @param url URL of the REST Call
+	 * @param accept Format Expected  by the REST CALL
+	 * @param encoding Encoding Expected by the REST Call
+	 * @return Response as plain text (RAW)
 	 * @throws TimeoutException
 	 * @throws InterruptedException
 	 * @throws MemcachedException
@@ -139,12 +149,12 @@ public class MemcachedRESTClient implements Configurable{
 	}
 
 	/**
-	 * 
-	 * @param url
-	 * @param accept
-	 * @param encoding
+	 * An issue occurs with Memcached, so it will perform the REST Call
+	 * @param url URL of the REST Call
+	 * @param accept Format Expected  by the REST CALL
+	 * @param encoding Encoding Expected by the REST CALL
 	 * @param e
-	 * @return
+	 * @return Response as plain text (RAW)
 	 * @throws IOException
 	 */
 	protected String treatCacheException(String url, String accept, String encoding, Exception e) throws IOException {
@@ -154,12 +164,12 @@ public class MemcachedRESTClient implements Configurable{
 	}
 	
 	/**
-	 * 
-	 * @param key
-	 * @param url
-	 * @param accept
-	 * @param encoding
-	 * @return
+	 * Perform the Rest Call and stores it in the cache
+	 * @param key Cache key to be stored
+	 * @param url URL of the REST Call
+	 * @param accept Format Expected  by the REST CALL
+	 * @param encoding Encoding Expected by the REST CALL
+	 * @return Response as plain text (RAW)
 	 * @throws TimeoutException
 	 * @throws InterruptedException
 	 * @throws MemcachedException
@@ -182,11 +192,11 @@ public class MemcachedRESTClient implements Configurable{
 	}
 	
 	/**
-	 * 
-	 * @param url
-	 * @param accept
-	 * @param encoding
-	 * @return
+	 * Performs the REST Call
+	 * @param url URL of the REST Call
+	 * @param accept Format Expected  by the REST CALL
+	 * @param encoding Encoding Expected by the REST CALL
+	 * @return Response as plain text (RAW)
 	 * @throws IOException
 	 */
 	protected String makeRESTCall(String url, String accept, String encoding) throws IOException{
@@ -224,8 +234,7 @@ public class MemcachedRESTClient implements Configurable{
 	/**
 	 * Checks if a HTTP connection has a valid response (200 OK) 
 	 * @param connection HTTP Connection
-	 * @return true If the response is "HTTP/1.0 200 OK"
-	 * @return false In other case
+	 * @return true If the response is "HTTP/1.0 200 OK", false In other case
 	 * @throws IOException if an error occurred connecting to the server.
 	 */
 	protected boolean isValidResponse(HttpURLConnection connection)

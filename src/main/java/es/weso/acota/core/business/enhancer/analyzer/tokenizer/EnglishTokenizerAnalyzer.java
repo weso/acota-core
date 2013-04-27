@@ -41,9 +41,6 @@ public class EnglishTokenizerAnalyzer extends TokenizerAnalyzerAdapter implement
 		setTokenizerTokens(configuration.getTokenizerEnTokens());
 	}
 
-	/**
-	 * @see es.weso.acota.core.business.enhancer.analyzer.opennlp.OpenNLPAnalyzerAdapter#lazyOpenNlpInitialization()
-	 */
 	@Override
 	protected void lazyOpenNlpInitialization() throws AcotaConfigurationException {
 		try{

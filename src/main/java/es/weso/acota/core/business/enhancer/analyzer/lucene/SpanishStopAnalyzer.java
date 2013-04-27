@@ -69,6 +69,11 @@ public class SpanishStopAnalyzer extends Analyzer {
 		this.stopWrods = StopFilter.makeStopSet(Version.LUCENE_31,SPANISH_STOP_WORDS);
 	}
 	
+	/**
+	 * Gets an instance of {@link EnglishStopAnalyzer }, 
+	 * in the case it does not exists, it will create one,
+	 * @return The {@link EnglishStopAnalyzer }'s instance
+	 */
 	public static SpanishStopAnalyzer getInstance(){
 		if(SPANISH_STOP_ANALYZER==null)
 			SpanishStopAnalyzer.SPANISH_STOP_ANALYZER = new SpanishStopAnalyzer();

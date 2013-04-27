@@ -22,9 +22,9 @@ import es.weso.acota.core.entity.TagTO;
 import es.weso.acota.core.exceptions.AcotaConfigurationException;
 import es.weso.acota.core.exceptions.DocumentBuilderException;
 import es.weso.acota.core.exceptions.RESTException;
-import es.weso.acota.core.utils.AcotaUtils;
+import es.weso.acota.core.utils.AcotaUtil;
 import es.weso.acota.core.utils.documents.DocumentBuilderHelper;
-import es.weso.acota.core.utils.lang.LanguageUtil;
+import es.weso.acota.core.utils.lang.LanguageDetector;
 import es.weso.acota.core.utils.rest.MemcachedRESTClient;
 
 /**
@@ -47,6 +47,7 @@ public class GoogleEnhancer extends EnhancerAdapter implements Configurable {
 	protected double googleRelevance;
 	
 	protected MemcachedRESTClient restClient;
+	protected LanguageDetector languageDetector;
 	
 	protected CoreConfiguration configuration;
 	
@@ -67,7 +68,7 @@ public class GoogleEnhancer extends EnhancerAdapter implements Configurable {
 	 * @throws AcotaConfigurationException Any exception that occurs 
 	 * while initializing Configuration object
 	 */
-	public GoogleEnhancer(CoreConfiguration core) throws AcotaConfigurationException{
+	public GoogleEnhancer(CoreConfiguration configuration) throws AcotaConfigurationException{
 		super();
 		GoogleEnhancer.provider = new ProviderTO("Google Enhancer");
 		loadConfiguration(configuration);
@@ -84,27 +85,41 @@ public class GoogleEnhancer extends EnhancerAdapter implements Configurable {
 		this.googlePercentile = configuration.getGooglePercentile();
 		this.googleLimit = configuration.getGoogleLimit();
 		this.restClient = MemcachedRESTClient.getInstance(configuration);
+		this.languageDetector = LanguageDetector.getInstance(configuration);
 	}
 	
 	@Override
 	protected void execute() throws Exception {	
 		List<Entry<String, TagTO>> sortedTags = 
-				AcotaUtils.sortTags(AcotaUtils.cloneTags(tags));
+				AcotaUtil.sortTags(AcotaUtil.backupTags(tags));
 		
 		long percentileLimit = Math.round(sortedTags.size() * (googlePercentile/100d));
 		long currentLimit = googleLimit < percentileLimit ? googleLimit : percentileLimit;
 		
 		for (int i = 0; i < currentLimit; i++) {
-			temp(sortedTags, i);
+			enrich(sortedTags, i);
 		}
 	}
 
-	private void temp(List<Entry<String, TagTO>> sortedTags, int i)
+	/**
+	 * Performs the enrichment
+	 * @param sortedTags List of Sorted Tags
+	 * @param i Position to enrich
+	 * @throws AcotaConfigurationException Any exception that occurs 
+	 * while initializing Configuration object
+	 * @throws IOException
+	 * @throws RESTException
+	 * @throws UnsupportedEncodingException The Character Encoding is not supported.
+	 * @throws DocumentBuilderException
+	 * @throws TransformerException If happens an exceptional condition that
+	 * occurred during the transformation process.
+	 */
+	private void enrich(List<Entry<String, TagTO>> sortedTags, int i)
 			throws AcotaConfigurationException, IOException, RESTException,
 			UnsupportedEncodingException, DocumentBuilderException,
 			TransformerException {
 		String label = sortedTags.get(i).getKey();
-		String language = LanguageUtil.detect(label);
+		String language = languageDetector.detect(label);
 		String result = restClient.execute(generateURL(label, language), 
 				MemcachedRESTClient.APPLICATION_XML, googleEncoding);
 		Document document = processResponse(result);
@@ -124,8 +139,8 @@ public class GoogleEnhancer extends EnhancerAdapter implements Configurable {
 			throws UnsupportedEncodingException, AcotaConfigurationException {
 		StringBuilder url = new StringBuilder(googleUrl)
 			.append(URLEncoder.encode(label, "utf8"));
-		if(language.equals(LanguageUtil.ISO_639_UNDEFINED)){
-			url.append("&hl=").append(LanguageUtil.detect(label));
+		if(language.equals(LanguageDetector.ISO_639_UNDEFINED)){
+			url.append("&hl=").append(languageDetector.detect(label));
 		}
 		return url.toString();
 	}
@@ -156,6 +171,7 @@ public class GoogleEnhancer extends EnhancerAdapter implements Configurable {
 	/**
 	 * Loads Google Autocomplete's XML result document into the tags map
 	 * @param result Google Autocomplete's XML result document
+	 * @param language Language of the document
 	 * @throws TransformerException If happens an exceptional condition that
 	 * occurred during the transformation process.
 	 */

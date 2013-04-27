@@ -19,9 +19,9 @@ import es.weso.acota.core.business.enhancer.analyzer.opennlp.SpanishOpenNLPAnaly
 import es.weso.acota.core.entity.ProviderTO;
 import es.weso.acota.core.entity.TagTO;
 import es.weso.acota.core.exceptions.AcotaConfigurationException;
-import es.weso.acota.core.utils.lang.LanguageUtil;
+import es.weso.acota.core.utils.lang.LanguageDetector;
 
-import static es.weso.acota.core.utils.lang.LanguageUtil.ISO_639_SPANISH;
+import static es.weso.acota.core.utils.lang.LanguageDetector.ISO_639_SPANISH;
 
 /**
  * OpenNLPEnhancer is an {@link Enhancer} specialized in modifying
@@ -43,6 +43,7 @@ public class OpenNLPEnhancer extends EnhancerAdapter implements Configurable {
 	
 	protected OpenNLPAnalyzer openNlpAnalyzer;
 	
+	protected LanguageDetector languageDetector;
 	protected CoreConfiguration configuration;
 	
 	/**
@@ -95,6 +96,8 @@ public class OpenNLPEnhancer extends EnhancerAdapter implements Configurable {
 			this.englishOpenNlpAnalyzer = new EnglishOpenNLPAnalyzer(configuration);
 		else
 			englishOpenNlpAnalyzer.loadConfiguration(configuration);
+		
+		this.languageDetector = LanguageDetector.getInstance(configuration);
 	}
 	
 	@Override
@@ -253,7 +256,7 @@ public class OpenNLPEnhancer extends EnhancerAdapter implements Configurable {
 	 * a Configuration object 
 	 */
 	protected OpenNLPAnalyzer loadAnalyzer(String text) throws AcotaConfigurationException {
-		String language = LanguageUtil.detect(text);
+		String language = languageDetector.detect(text);
 		OpenNLPAnalyzer analyzer = null;
 		if (language.equals(ISO_639_SPANISH)) {
 			if(spanishOpenNlpAnalyzer==null)

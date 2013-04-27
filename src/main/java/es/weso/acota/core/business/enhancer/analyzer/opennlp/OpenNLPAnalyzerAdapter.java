@@ -185,6 +185,7 @@ public abstract class OpenNLPAnalyzerAdapter implements OpenNLPAnalyzer{
 	
 	/**
 	 * Lazy Load the configuration required by the Analyzer
+	 * @throws AcotaConfigurationException Any exception that occurs
 	 */
 	protected final void lazyInitialization() throws AcotaConfigurationException {
 		if(modified){
@@ -199,6 +200,7 @@ public abstract class OpenNLPAnalyzerAdapter implements OpenNLPAnalyzer{
 	
 	/**
 	 * Loads OpenNLP required files
+	 * @throws AcotaConfigurationException Any exception that occurs 
 	 */
 	protected abstract void lazyOpenNlpInitialization() throws AcotaConfigurationException;
 }

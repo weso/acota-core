@@ -8,6 +8,7 @@ import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.log4j.Logger;
 
+import es.weso.acota.core.business.enhancer.SeedConfiguration;
 import es.weso.acota.core.exceptions.AcotaConfigurationException;
 import es.weso.acota.core.utils.ExternalizableConfiguration;
 /**
@@ -17,14 +18,14 @@ import es.weso.acota.core.utils.ExternalizableConfiguration;
  * 
  * @author César Luis Alvargonzález
  */
-public class CoreConfiguration implements Configuration {
+public class CoreConfiguration extends SeedConfiguration implements Configuration {
 
-	protected static final String INTERNAL_ACOTA_PROPERTIES_PATH = "/resources/inner.acota.properties";
+	protected static final String INTERNAL_ACOTA_PROPERTIES_PATH = "inner.acota.core.properties";
 
 	protected static Logger LOGGER;
 	protected static CompositeConfiguration CONFIG;
+	
 	protected String googleEncoding;
-
 	protected Double googleRelevance;
 	protected int googlePercentile;
 	protected int googleLimit;
@@ -77,10 +78,10 @@ public class CoreConfiguration implements Configuration {
 	 */
 	public CoreConfiguration() throws AcotaConfigurationException {
 		CoreConfiguration.LOGGER = Logger.getLogger(CoreConfiguration.class);
-
-		if (CONFIG == null) {
-			loadsConfiguration();
-		}
+		
+		CompositeConfiguration configuration = foo(CONFIG);
+		if(CONFIG==null)
+			CoreConfiguration.CONFIG = configuration;
 
 		loadLuceneEnhancerConfig();
 		loadTokenizerEnhancerConfig();
@@ -354,31 +355,20 @@ public class CoreConfiguration implements Configuration {
 		this.memcachedExpireTime = memcachedExpireTime;
 	}
 
-	/**
-	 * @see es.weso.acota.core.Configuration#loadsConfiguration()
-	 */
-	public void loadsConfiguration() throws AcotaConfigurationException {
-		CoreConfiguration.CONFIG = new CompositeConfiguration();
-		
-		try {
-			CONFIG.addConfiguration(new PropertiesConfiguration(
-					"acota.properties"));
-		} catch (Exception e) {
-			LOGGER.warn("acota.properties not found, Using default values.");
-		}
-		
+	@Override
+	protected void loadCustomConfiguration(CompositeConfiguration config) throws AcotaConfigurationException {
 		try {
 			Class<?> resourceLoader = Class
 					.forName("es.weso.acota.core.utils.ResourceLoader");
 			ExternalizableConfiguration rlInstance = (ExternalizableConfiguration) resourceLoader
 					.newInstance();
-			CONFIG.addConfiguration(rlInstance.getConfiguration());
+			config.addConfiguration(rlInstance.getConfiguration());
 		} catch (Exception e) {
 			LOGGER.warn("acota-utils jar not found.");
 		}
 
 		try {
-			CONFIG.addConfiguration(new PropertiesConfiguration(this.getClass()
+			config.addConfiguration(new PropertiesConfiguration(this.getClass().getClassLoader()
 					.getResource(INTERNAL_ACOTA_PROPERTIES_PATH)));
 		} catch (ConfigurationException e) {
 			throw new AcotaConfigurationException(e);

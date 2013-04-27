@@ -28,6 +28,11 @@ public class EnglishStopAnalyzer extends Analyzer {
 	 */
 	private EnglishStopAnalyzer() {}
 
+	/**
+	 * Gets an instance of {@link EnglishStopAnalyzer }, 
+	 * in the case it does not exists, it will create one,
+	 * @return The {@link EnglishStopAnalyzer }'s instance
+	 */
 	public static EnglishStopAnalyzer getInstance(){
 		if(ENGLISH_STOP_ANALYZER==null)
 			EnglishStopAnalyzer.ENGLISH_STOP_ANALYZER = new EnglishStopAnalyzer();

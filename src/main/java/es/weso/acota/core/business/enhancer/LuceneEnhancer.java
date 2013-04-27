@@ -16,10 +16,10 @@ import es.weso.acota.core.business.enhancer.analyzer.lucene.SpanishStopAnalyzer;
 import es.weso.acota.core.entity.ProviderTO;
 import es.weso.acota.core.entity.TagTO;
 import es.weso.acota.core.exceptions.AcotaConfigurationException;
-import es.weso.acota.core.utils.lang.LanguageUtil;
+import es.weso.acota.core.utils.lang.LanguageDetector;
 
-import static es.weso.acota.core.utils.lang.LanguageUtil.ISO_639_ENGLISH;
-import static es.weso.acota.core.utils.lang.LanguageUtil.ISO_639_SPANISH;
+import static es.weso.acota.core.utils.lang.LanguageDetector.ISO_639_ENGLISH;
+import static es.weso.acota.core.utils.lang.LanguageDetector.ISO_639_SPANISH;
 
 
 /**
@@ -39,6 +39,8 @@ public class LuceneEnhancer extends EnhancerAdapter implements Configurable {
 	protected double luceneLabelRelevance;
 	protected double luceneTermRelevance;
 
+	protected LanguageDetector languageDetector;
+	
 	protected CoreConfiguration configuration;
 	
 	/**
@@ -71,6 +73,7 @@ public class LuceneEnhancer extends EnhancerAdapter implements Configurable {
 		this.configuration = configuration;
 		this.luceneLabelRelevance = configuration.getLuceneLabelRelevance();
 		this.luceneTermRelevance = configuration.getLuceneTermRelevance();
+		this.languageDetector = LanguageDetector.getInstance(configuration);
 	}
 	
 	@Override
@@ -125,7 +128,7 @@ public class LuceneEnhancer extends EnhancerAdapter implements Configurable {
 	protected void extractTerms(String title, String text, double relevance)
 			throws IOException, AcotaConfigurationException {
 
-		String language = LanguageUtil.detect(text);
+		String language = languageDetector.detect(text);
 		Analyzer analyzer = loadAnalyzer(language);
 
 		logger.debug("Get tokens of texts");

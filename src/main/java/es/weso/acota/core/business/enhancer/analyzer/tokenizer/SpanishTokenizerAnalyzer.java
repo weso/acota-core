@@ -40,9 +40,6 @@ public class SpanishTokenizerAnalyzer extends TokenizerAnalyzerAdapter implement
 		setTokenizerTokens(configuration.getTokenizerEsTokens());
 	}
 
-	/**
-	 * @see es.weso.acota.core.business.enhancer.analyzer.opennlp.OpenNLPAnalyzerAdapter#lazyOpenNlpInitialization()
-	 */
 	@Override
 	protected void lazyOpenNlpInitialization() throws AcotaConfigurationException {
 		try{

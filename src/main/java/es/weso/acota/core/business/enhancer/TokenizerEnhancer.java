@@ -18,9 +18,9 @@ import es.weso.acota.core.business.enhancer.analyzer.tokenizer.TokenizerAnalyzer
 import es.weso.acota.core.entity.ProviderTO;
 import es.weso.acota.core.entity.TagTO;
 import es.weso.acota.core.exceptions.AcotaConfigurationException;
-import es.weso.acota.core.utils.lang.LanguageUtil;
+import es.weso.acota.core.utils.lang.LanguageDetector;
 
-import static es.weso.acota.core.utils.lang.LanguageUtil.ISO_639_SPANISH;
+import static es.weso.acota.core.utils.lang.LanguageDetector.ISO_639_SPANISH;
 
 /**
  * TokenizerEnhancer is an {@link Enhancer} specialized in tokenizing, removing stop-words and
@@ -45,6 +45,7 @@ public class TokenizerEnhancer extends EnhancerAdapter implements Configurable {
 	protected SpanishTokenizerAnalyzer spanishTokenizerAnalyzer;
 	
 	protected TokenizerAnalyzer currentTokenizerAnalyzer;
+	protected LanguageDetector languageUtil;
 	
 	protected CoreConfiguration configuration;
 
@@ -137,6 +138,7 @@ public class TokenizerEnhancer extends EnhancerAdapter implements Configurable {
 			this.englishTokenizerAnalyzer = new EnglishTokenizerAnalyzer(configuration);
 		else
 			this.englishTokenizerAnalyzer.loadConfiguration(configuration);
+		this.languageUtil = LanguageDetector.getInstance(configuration);
 	}
 
 	/**
@@ -202,7 +204,7 @@ public class TokenizerEnhancer extends EnhancerAdapter implements Configurable {
 	 */
 	protected void extractTerms(String title, String text, double relevance)
 			throws IOException, AcotaConfigurationException {
-		String language = LanguageUtil.detect(text);
+		String language = languageUtil.detect(text);
 		this.currentTokenizerAnalyzer = loadAnalyzer(language);
 		
 		String[] sentences = currentTokenizerAnalyzer.sentDetect(text);
@@ -218,8 +220,7 @@ public class TokenizerEnhancer extends EnhancerAdapter implements Configurable {
 	 * Generates the k-words saving them into a auxiliary map
 	 * @param tokenizedText Tokenized Text
 	 * @param relevance Weight which is incremented each matched term
-	 * @param TokenizerAnalyzer
-	 * @throws AcotaConfigurationException 
+	 * @throws AcotaConfigurationException Any exception that occurs 
 	 */
 	protected void loadChunks(String[] tokenizedText, double relevance) throws AcotaConfigurationException {
 		for (int i = 1; i <= k; i++) {
@@ -241,7 +242,7 @@ public class TokenizerEnhancer extends EnhancerAdapter implements Configurable {
 	 * 
 	 * @param chunk
 	 * @return 
-	 * @throws AcotaConfigurationException 
+	 * @throws AcotaConfigurationException Any exception that occurs 
 	 */
 	protected String[] cleanChunks(String[] chunk) throws AcotaConfigurationException {
 		List<String> auxList = new LinkedList<String>();
@@ -271,10 +272,10 @@ public class TokenizerEnhancer extends EnhancerAdapter implements Configurable {
 	}
 
 	/**
-	 * Process the auxiliary 
+	 * Performs a terms analysis
 	 * @param relevance Weight which is incremented each matched term
 	 * @throws IOException Signals that an I/O exception of some sort has occurred
-	 * @throws AcotaConfigurationException 
+	 * @throws AcotaConfigurationException Any exception that occurs 
 	 */
 	protected void analysisOfTerms(double relevance) throws IOException, AcotaConfigurationException {
 		for (Entry<StringArrayWrapper, Double> value : auxiliar.entrySet()) {
@@ -288,7 +289,7 @@ public class TokenizerEnhancer extends EnhancerAdapter implements Configurable {
 	 * @param tags OpenNLP Tags related to the Tokenized Text
 	 * @param tokenizedText Tokenized Text
 	 * @param relevance Weight which is incremented each matched term
-	 * @throws AcotaConfigurationException 
+	 * @throws AcotaConfigurationException Any exception that occurs 
 	 */
 	protected void processSetence(String[] tags, String[] tokenizedText,
 			double relevance) throws AcotaConfigurationException {
@@ -298,7 +299,7 @@ public class TokenizerEnhancer extends EnhancerAdapter implements Configurable {
 			String label = StringUtils.join(
 					Arrays.copyOfRange(tokenizedText, min, max + 1), " ");
 			TagTO tag = new TagTO(label,
-					LanguageUtil.detect(label),
+					languageUtil.detect(label),
 					provider, request.getResource());
 			fillSuggestions(tag, relevance);
 		}
@@ -307,9 +308,9 @@ public class TokenizerEnhancer extends EnhancerAdapter implements Configurable {
 	/**
 	 * Calculates the bigger valid index of the array
 	 * @param tags Array of OpenNLP tags
-	 * @return The bigger valid index of the array
-	 * @return -1 If there is no valid tags
-	 * @throws AcotaConfigurationException 
+	 * @return The bigger valid index of the array,
+	 * -1 If there is no valid tags
+	 * @throws AcotaConfigurationException Any exception that occurs 
 	 */
 	protected int calculateMax(String[] tags) throws AcotaConfigurationException {
 		for (int i = tags.length - 1; i >= 0; i--) {
@@ -322,9 +323,9 @@ public class TokenizerEnhancer extends EnhancerAdapter implements Configurable {
 	/**
 	 * Calculates the lower valid index of the array
 	 * @param tags Array of OpenNLP tags
-	 * @return The lower valid index of the array
-	 * @return -1 If there is no valid tags
-	 * @throws AcotaConfigurationException 
+	 * @return The lower valid index of the array, 
+	 * -1 If there is no valid tags
+	 * @throws AcotaConfigurationException Any exception that occurs 
 	 */
 	protected int calculateMin(String[] tags) throws AcotaConfigurationException {
 		for (int i = 0; i < tags.length; i++) {
