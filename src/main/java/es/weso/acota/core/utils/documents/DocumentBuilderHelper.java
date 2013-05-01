@@ -15,7 +15,7 @@ import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import es.weso.acota.core.exceptions.DocumentBuilderException;
+import es.weso.acota.core.exceptions.AcotaDocumentBuilderException;
 
 /**
  * DocumentBuilderHelper is a helper class for building Documents from different sources.
@@ -53,15 +53,15 @@ public class DocumentBuilderHelper {
     /**
      * Creates a new DocumentBuilder
      * @return New DocumentBuilder
-     * @throws DocumentBuilderException Any exception that occurs during the DOM creation.
+     * @throws AcotaDocumentBuilderException Any exception that occurs during the DOM creation.
      */
-    public static DocumentBuilder createDocumentBuilder() throws DocumentBuilderException {
+    public static DocumentBuilder createDocumentBuilder() throws AcotaDocumentBuilderException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         try {
             return factory.newDocumentBuilder();
         } catch (ParserConfigurationException e) {
-            throw new DocumentBuilderException(e);
+            throw new AcotaDocumentBuilderException(e);
         }
     }
 
@@ -69,17 +69,17 @@ public class DocumentBuilderHelper {
      * Returns a Document from the input path
      * @param uri The system identifier of the file
      * @return New Document from input path
-     * @throws DocumentBuilderException Any exception that occurs during the DOM creation.
+     * @throws AcotaDocumentBuilderException Any exception that occurs during the DOM creation.
      */
-    public static Document getDocumentFromString(String uri) throws DocumentBuilderException {
+    public static Document getDocumentFromString(String uri) throws AcotaDocumentBuilderException {
         try {
             return createDocumentBuilder().parse(getInputSourceFromString(uri));
         } catch (SAXException e) {
-            throw new DocumentBuilderException(e);
+            throw new AcotaDocumentBuilderException(e);
         } catch (IOException e) {
-            throw new DocumentBuilderException(e);
-        } catch (DocumentBuilderException e) {
-            throw new DocumentBuilderException(e);
+            throw new AcotaDocumentBuilderException(e);
+        } catch (AcotaDocumentBuilderException e) {
+            throw new AcotaDocumentBuilderException(e);
         }
     }
 
@@ -87,15 +87,15 @@ public class DocumentBuilderHelper {
      * Returns a Document from the supplied Reader
      * @param reader Supplied Reader
      * @return New Document from the supplied Reader
-     * @throws DocumentBuilderException Any exception that occurs during the DOM creation.
+     * @throws AcotaDocumentBuilderException Any exception that occurs during the DOM creation.
      */
-    public static Document getDocumentFromReader(Reader reader) throws DocumentBuilderException {
+    public static Document getDocumentFromReader(Reader reader) throws AcotaDocumentBuilderException {
         try {
             return createDocumentBuilder().parse(getInputSourceFromReader(reader));
         } catch (SAXException e) {
-            throw new DocumentBuilderException(e);
+            throw new AcotaDocumentBuilderException(e);
         } catch (IOException e) {
-            throw new DocumentBuilderException(e);
+            throw new AcotaDocumentBuilderException(e);
         }
     }
 
@@ -103,24 +103,24 @@ public class DocumentBuilderHelper {
      * Returns a new Document from the supplied inputStream
      * @param inputStream Supplied InputStream
      * @return New Document from the supplied inputStream
-     * @throws DocumentBuilderException Any exception that occurs during the DOM creation.
+     * @throws AcotaDocumentBuilderException Any exception that occurs during the DOM creation.
      */
-    public static Document getDocumentFromInputStream(InputStream inputStream) throws DocumentBuilderException {
+    public static Document getDocumentFromInputStream(InputStream inputStream) throws AcotaDocumentBuilderException {
         try {
             return createDocumentBuilder().parse(inputStream);
         } catch (SAXException e) {
-            throw new DocumentBuilderException(e);
+            throw new AcotaDocumentBuilderException(e);
         } catch (IOException e) {
-            throw new DocumentBuilderException(e);
+            throw new AcotaDocumentBuilderException(e);
         }
     }
 
     /**
      * Returns an empty Document
      * @return Empty Document
-     * @throws DocumentBuilderException Any exception that occurs during the DOM creation.
+     * @throws AcotaDocumentBuilderException Any exception that occurs during the DOM creation.
      */
-    public static Document getEmptyDocument() throws DocumentBuilderException {
+    public static Document getEmptyDocument() throws AcotaDocumentBuilderException {
         return createDocumentBuilder().newDocument();
     }
 
@@ -128,22 +128,22 @@ public class DocumentBuilderHelper {
      * Returns a Document from the File
      * @param file File Path
      * @return Document from the File
-     * @throws DocumentBuilderException Any exception that occurs during the DOM creation.
+     * @throws AcotaDocumentBuilderException Any exception that occurs during the DOM creation.
      */
-    public static Document getDocumentFromFile(File file) throws DocumentBuilderException{
+    public static Document getDocumentFromFile(File file) throws AcotaDocumentBuilderException{
         InputStream is = null;
         try {
             is = new FileInputStream(file);
             return getDocumentFromInputStream(is);
         } catch(IOException e){
-        	 throw new DocumentBuilderException(e);
+        	 throw new AcotaDocumentBuilderException(e);
         } finally {
             try {
                 if (is != null) {
                     is.close();
                 }
             } catch (IOException e) {
-                throw new DocumentBuilderException(e);
+                throw new AcotaDocumentBuilderException(e);
             }
         }
     }

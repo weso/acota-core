@@ -3,7 +3,7 @@ package es.weso.acota.core.exceptions;
 /**
  * This class models an exception occurred during the DOM creation.
  */
-public class DocumentBuilderException extends Exception {
+public class AcotaDocumentBuilderException extends Exception {
 
 	private static final long serialVersionUID = 634129594668717812L;
 
@@ -14,7 +14,7 @@ public class DocumentBuilderException extends Exception {
 	 * @param message the detail message
 	 * @param cause the cause
 	 */
-	public DocumentBuilderException(String message, Throwable cause) {
+	public AcotaDocumentBuilderException(String message, Throwable cause) {
 		super(message, cause);
 	}
 
@@ -23,7 +23,7 @@ public class DocumentBuilderException extends Exception {
 	 * the specified detail message.
 	 * @param message the detail message
 	 */
-	public DocumentBuilderException(String message) {
+	public AcotaDocumentBuilderException(String message) {
 		super(message);
 	}
 
@@ -32,7 +32,7 @@ public class DocumentBuilderException extends Exception {
 	 * specified cause
 	 * @param cause the cause
 	 */
-	public DocumentBuilderException(Throwable cause) {
+	public AcotaDocumentBuilderException(Throwable cause) {
 		super(cause);
 	}
 

@@ -241,7 +241,7 @@ public class TokenizerEnhancer extends EnhancerAdapter implements Configurable {
 	 * 	</ul>
 	 * 
 	 * @param chunk
-	 * @return 
+	 * @return The supplied chunk, cleaned
 	 * @throws AcotaConfigurationException Any exception that occurs 
 	 */
 	protected String[] cleanChunks(String[] chunk) throws AcotaConfigurationException {

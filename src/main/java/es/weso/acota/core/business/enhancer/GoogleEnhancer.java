@@ -20,8 +20,8 @@ import es.weso.acota.core.business.enhancer.EnhancerAdapter;
 import es.weso.acota.core.entity.ProviderTO;
 import es.weso.acota.core.entity.TagTO;
 import es.weso.acota.core.exceptions.AcotaConfigurationException;
-import es.weso.acota.core.exceptions.DocumentBuilderException;
-import es.weso.acota.core.exceptions.RESTException;
+import es.weso.acota.core.exceptions.AcotaDocumentBuilderException;
+import es.weso.acota.core.exceptions.AcotaRESTException;
 import es.weso.acota.core.utils.AcotaUtil;
 import es.weso.acota.core.utils.documents.DocumentBuilderHelper;
 import es.weso.acota.core.utils.lang.LanguageDetector;
@@ -108,15 +108,15 @@ public class GoogleEnhancer extends EnhancerAdapter implements Configurable {
 	 * @throws AcotaConfigurationException Any exception that occurs 
 	 * while initializing Configuration object
 	 * @throws IOException
-	 * @throws RESTException
+	 * @throws AcotaRESTException
 	 * @throws UnsupportedEncodingException The Character Encoding is not supported.
-	 * @throws DocumentBuilderException
+	 * @throws AcotaDocumentBuilderException
 	 * @throws TransformerException If happens an exceptional condition that
 	 * occurred during the transformation process.
 	 */
 	private void enrich(List<Entry<String, TagTO>> sortedTags, int i)
-			throws AcotaConfigurationException, IOException, RESTException,
-			UnsupportedEncodingException, DocumentBuilderException,
+			throws AcotaConfigurationException, IOException, AcotaRESTException,
+			UnsupportedEncodingException, AcotaDocumentBuilderException,
 			TransformerException {
 		String label = sortedTags.get(i).getKey();
 		String language = languageDetector.detect(label);
@@ -162,9 +162,9 @@ public class GoogleEnhancer extends EnhancerAdapter implements Configurable {
 	 * Transforms the Google Autocomplete REST call return to an XML Document
 	 * @param response Rest call response on RAW
 	 * @return XML Document returned by the rest call
-	 * @throws DocumentBuilderException Any exception that occurs during the DOM creation.
+	 * @throws AcotaDocumentBuilderException Any exception that occurs during the DOM creation.
 	 */
-	protected Document processResponse(String response) throws DocumentBuilderException{
+	protected Document processResponse(String response) throws AcotaDocumentBuilderException{
 		return DocumentBuilderHelper.getDocumentFromString(response);
 	}
 

@@ -12,7 +12,7 @@ import org.apache.log4j.Logger;
 import es.weso.acota.core.CoreConfiguration;
 import es.weso.acota.core.business.enhancer.Configurable;
 import es.weso.acota.core.exceptions.AcotaConfigurationException;
-import es.weso.acota.core.exceptions.RESTException;
+import es.weso.acota.core.exceptions.AcotaRESTException;
 
 import net.rubyeye.xmemcached.MemcachedClient;
 import net.rubyeye.xmemcached.MemcachedClientBuilder;
@@ -106,9 +106,9 @@ public class MemcachedRESTClient implements Configurable{
 	 * @param encoding Encoding Expected by the REST CALL
 	 * @return Response as plain text (RAW)
 	 * @throws IOException
-	 * @throws RESTException
+	 * @throws AcotaRESTException
 	 */
-	public String execute(String url, String accept,  String encoding) throws IOException, RESTException{
+	public String execute(String url, String accept,  String encoding) throws IOException, AcotaRESTException{
 		String result;
 		if(memcachedEnabled){
 			try {
@@ -136,10 +136,10 @@ public class MemcachedRESTClient implements Configurable{
 	 * @throws TimeoutException
 	 * @throws InterruptedException
 	 * @throws MemcachedException
-	 * @throws RESTException
+	 * @throws AcotaRESTException
 	 */
 	protected String getResultFromCache(String url, String accept, String encoding) throws TimeoutException,
-			InterruptedException, MemcachedException, RESTException {
+			InterruptedException, MemcachedException, AcotaRESTException {
 		String key = "rest_" + url.hashCode();
 		String response = memcachedClient.get(key);
 		if (response == null) {
@@ -173,10 +173,10 @@ public class MemcachedRESTClient implements Configurable{
 	 * @throws TimeoutException
 	 * @throws InterruptedException
 	 * @throws MemcachedException
-	 * @throws RESTException
+	 * @throws AcotaRESTException
 	 */
 	protected String queryEndpointAndStore(String key, String url, String accept, String encoding)
-			throws TimeoutException, InterruptedException, MemcachedException, RESTException {
+			throws TimeoutException, InterruptedException, MemcachedException, AcotaRESTException {
 		String response = "";
 		try {
 			response = makeRESTCall(url, accept, encoding);
@@ -185,7 +185,7 @@ public class MemcachedRESTClient implements Configurable{
 		} catch (IOException e) {
 			log.error("An error ocurred execution the REST call. "
 					+ "The results will not be stored in the cache.", e);
-			throw new RESTException("An error ocurred execution the REST call. "
+			throw new AcotaRESTException("An error ocurred execution the REST call. "
 					+ "The results will not be stored in the cache.", e);
 		}
 		return response;
