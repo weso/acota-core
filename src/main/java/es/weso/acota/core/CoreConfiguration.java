@@ -362,13 +362,13 @@ public class CoreConfiguration extends SeedConfiguration implements Configuratio
 					.forName("es.weso.acota.core.utils.ResourceLoader");
 			ExternalizableConfiguration rlInstance = (ExternalizableConfiguration) resourceLoader
 					.newInstance();
-			config.addConfiguration(rlInstance.getConfiguration());
+			config.append(rlInstance.getConfiguration());
 		} catch (Exception e) {
 			LOGGER.warn("acota-utils jar not found.");
 		}
 
 		try {
-			config.addConfiguration(new PropertiesConfiguration(this.getClass().getClassLoader()
+			config.append(new PropertiesConfiguration(this.getClass().getClassLoader()
 					.getResource(INTERNAL_ACOTA_PROPERTIES_PATH)));
 		} catch (ConfigurationException e) {
 			throw new AcotaConfigurationException(e);

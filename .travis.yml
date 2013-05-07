@@ -1,9 +1,10 @@
 language: java
 
 jdk:
-  - openjdk6
   - openjdk7
   - oraclejdk7
+  - openjdk6
+  - oraclejdk6
 
 before_script:
   - 'wget http://156.35.82.101:7000/downloads/acota/utils/travis/core/weso/acota.properties'
