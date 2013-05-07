@@ -40,7 +40,7 @@ public class CoreConfiguration extends SeedConfiguration implements Configuratio
 	protected List<String> openNlpEnTokens;
 	protected List<String> openNlpEnNouns;
 	protected List<String> openNlpEnVerbs;
-	protected List<String> openNlpEnNumbers;
+	protected List<String> openNlpEnAdjectives;
 
 	protected String openNlpEsPosBin;
 	protected String openNlpEsSentBin;
@@ -48,7 +48,7 @@ public class CoreConfiguration extends SeedConfiguration implements Configuratio
 	protected List<String> openNlpEsTokens;
 	protected List<String> openNlpEsNouns;
 	protected List<String> openNlpEsVerbs;
-	protected List<String> openNlpEsNumbers;
+	protected List<String> openNlpEsAdjectives;
 
 	protected String tokenizerEnPattern;
 	protected List<String> tokenizerEnTokens;
@@ -79,7 +79,7 @@ public class CoreConfiguration extends SeedConfiguration implements Configuratio
 	public CoreConfiguration() throws AcotaConfigurationException {
 		CoreConfiguration.LOGGER = Logger.getLogger(CoreConfiguration.class);
 		
-		CompositeConfiguration configuration = foo(CONFIG);
+		CompositeConfiguration configuration = configure(CONFIG);
 		if(CONFIG==null)
 			CoreConfiguration.CONFIG = configuration;
 
@@ -243,8 +243,8 @@ public class CoreConfiguration extends SeedConfiguration implements Configuratio
 		return openNlpEnVerbs;
 	}
 
-	public List<String> getOpenNlpEnNumbers() {
-		return openNlpEnNumbers;
+	public List<String> getOpenNlpEnAdjectives() {
+		return openNlpEnAdjectives;
 	}
 
 	public List<String> getOpenNlpEsTokens() {
@@ -259,8 +259,8 @@ public class CoreConfiguration extends SeedConfiguration implements Configuratio
 		return openNlpEsVerbs;
 	}
 
-	public List<String> getOpenNlpEsNumbers() {
-		return openNlpEsNumbers;
+	public List<String> getOpenNlpEsAdjectives() {
+		return openNlpEsAdjectives;
 	}
 
 	public void setOpenNlpEnTokens(List<String> openNlpEnTokens) {
@@ -275,8 +275,8 @@ public class CoreConfiguration extends SeedConfiguration implements Configuratio
 		this.openNlpEnVerbs = openNlpEnVerbs;
 	}
 
-	public void setOpenNlpEnNumbers(List<String> openNlpEnNumbers) {
-		this.openNlpEnNumbers = openNlpEnNumbers;
+	public void setOpenNlpEnAdjectives(List<String> openNlpEnAdjectives) {
+		this.openNlpEnAdjectives = openNlpEnAdjectives;
 	}
 
 	public void setOpenNlpEsTokens(List<String> openNlpEsTokens) {
@@ -291,8 +291,8 @@ public class CoreConfiguration extends SeedConfiguration implements Configuratio
 		this.openNlpEsVerbs = openNlpEsVerbs;
 	}
 
-	public void setOpenNlpEsNumbers(List<String> openNlpEsNumbers) {
-		this.openNlpEsNumbers = openNlpEsNumbers;
+	public void setOpenNlpEsAdjectives(List<String> openNlpEsAdjectives) {
+		this.openNlpEsAdjectives = openNlpEsAdjectives;
 	}
 
 	public void setTokenizerEnPattern(String tokenizerEnPattern) {
@@ -411,7 +411,7 @@ public class CoreConfiguration extends SeedConfiguration implements Configuratio
 				Collections.EMPTY_LIST));
 		this.setOpenNlpEsVerbs((List) CONFIG.getList("opennlp.es.verbs",
 				Collections.EMPTY_LIST));
-		this.setOpenNlpEsNumbers((List) CONFIG.getList("opennlp.es.numbers",
+		this.setOpenNlpEsAdjectives((List) CONFIG.getList("opennlp.es.adjectives",
 				Collections.EMPTY_LIST));
 
 		this.setOpenNlpEnPosBin(CONFIG.getString("opennlp.en.pos"));
@@ -423,7 +423,7 @@ public class CoreConfiguration extends SeedConfiguration implements Configuratio
 				Collections.EMPTY_LIST));
 		this.setOpenNlpEnVerbs((List) CONFIG.getList("opennlp.en.verbs",
 				Collections.EMPTY_LIST));
-		this.setOpenNlpEnNumbers((List) CONFIG.getList("opennlp.en.numbers",
+		this.setOpenNlpEnAdjectives((List) CONFIG.getList("opennlp.en.adjectives",
 				Collections.EMPTY_LIST));
 	}
 
@@ -433,7 +433,6 @@ public class CoreConfiguration extends SeedConfiguration implements Configuratio
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void loadTokenizerEnhancerConfig() {
-
 		this.setTokenizerK(CONFIG.getInteger("tokenizer.k", 1));
 		this.setTokenizerLabelRelevance(CONFIG
 				.getDouble("tokenizer.label.relevance"));

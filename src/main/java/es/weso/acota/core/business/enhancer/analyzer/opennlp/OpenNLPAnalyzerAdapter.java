@@ -25,7 +25,7 @@ public abstract class OpenNLPAnalyzerAdapter implements OpenNLPAnalyzer{
 	protected Set<String> tokens;
 	protected Set<String> nouns;
 	protected Set<String> verbs;
-	protected Set<String> numbers;
+	protected Set<String> adjectives;
 	
 	protected String openNlpPosBin;
 	protected String openNlpSentBin;
@@ -33,7 +33,7 @@ public abstract class OpenNLPAnalyzerAdapter implements OpenNLPAnalyzer{
 	protected List<String> openNlpTokens;
 	protected List<String> openNlpNouns;
 	protected List<String> openNlpVerbs;
-	protected List<String> openNlpNumbers;
+	protected List<String> openNlpAdjectives;
 	
 	private boolean modified;
 	
@@ -98,12 +98,12 @@ public abstract class OpenNLPAnalyzerAdapter implements OpenNLPAnalyzer{
 	}
 	
 	/**
-	 * @see OpenNLPAnalyzer#isNumber(java.lang.String)
+	 * @see OpenNLPAnalyzer#isAdjective(java.lang.String)
 	 */
 	@Override
-	public boolean isNumber(String tag) throws AcotaConfigurationException {
+	public boolean isAdjective(String tag) throws AcotaConfigurationException {
 		lazyInitialization();
-		return numbers.contains(tag);
+		return adjectives.contains(tag);
 	}
 	
 	/**
@@ -173,12 +173,12 @@ public abstract class OpenNLPAnalyzerAdapter implements OpenNLPAnalyzer{
 	}
 	
 	/**
-	 * Sets the OpenNLP Numbers and the modified flag to true
-	 * @param openNlpNumbers OpenNlp Numbers
+	 * Sets the OpenNLP Adjectives and the modified flag to true
+	 * @param openNlpAdjectives OpenNlp Adjectives
 	 */
-	protected void setOpenNlpNumbers(List<String> openNlpNumbers){
-		if(this.openNlpNumbers==null || !this.openNlpNumbers.equals(openNlpNumbers)){
-			this.openNlpNumbers = openNlpNumbers;
+	protected void setOpenNlpAdjectives(List<String> openNlpAdjectives){
+		if(this.openNlpAdjectives==null || !this.openNlpAdjectives.equals(openNlpAdjectives)){
+			this.openNlpAdjectives = openNlpAdjectives;
 			this.modified = true;
 		}
 	}
@@ -193,7 +193,7 @@ public abstract class OpenNLPAnalyzerAdapter implements OpenNLPAnalyzer{
 			this.tokens = new HashSet<String>(openNlpTokens);
 			this.nouns = new HashSet<String>(openNlpNouns);
 			this.verbs = new HashSet<String>(openNlpVerbs);
-			this.numbers = new HashSet<String>(openNlpNumbers);
+			this.adjectives = new HashSet<String>(openNlpAdjectives);
 			this.modified = false;
 		}
 	}

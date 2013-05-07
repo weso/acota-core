@@ -37,7 +37,7 @@ public class EnglishOpenNLPAnalyzer extends OpenNLPAnalyzerAdapter implements Op
 		setOpenNlpTokens(configuration.getOpenNlpEnTokens());
 		setOpenNlpNouns(configuration.getOpenNlpEnNouns());
 		setOpenNlpVerbs(configuration.getOpenNlpEnVerbs());
-		setOpenNlpNumbers(configuration.getOpenNlpEnNumbers());
+		setOpenNlpAdjectives(configuration.getOpenNlpEnAdjectives());
 	}
 
 	/**

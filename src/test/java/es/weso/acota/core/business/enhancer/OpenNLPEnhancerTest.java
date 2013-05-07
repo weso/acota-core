@@ -41,7 +41,7 @@ public class OpenNLPEnhancerTest {
 	}
 	
 	@Test
-	public void OpenNLPEConstructorPronouns(){
+	public void OpenNLPEConstructorNouns(){
 		assertEquals(Collections.EMPTY_SET, openNLPEnhancer.nouns);
 	}
 	
@@ -52,7 +52,7 @@ public class OpenNLPEnhancerTest {
 
 	@Test
 	public void OpenNLPEConstructorNumbers(){
-		assertEquals(Collections.EMPTY_SET, openNLPEnhancer.numbers);
+		assertEquals(Collections.EMPTY_SET, openNLPEnhancer.adjectives);
 	}
 	
 	@Test
@@ -140,7 +140,7 @@ public class OpenNLPEnhancerTest {
 		TagTO tag3 = new TagTO("comer", LanguageDetector.ISO_639_SPANISH,
 				LuceneEnhancer.provider, suggest.getResource());
 		tag3.setValue(2.0);
-		TagTO tag4 = new TagTO("uno", LanguageDetector.ISO_639_SPANISH,
+		TagTO tag4 = new TagTO("bueno", LanguageDetector.ISO_639_SPANISH,
 				LuceneEnhancer.provider, suggest.getResource());
 		tag4.setValue(2.0);
 		
@@ -196,7 +196,7 @@ public class OpenNLPEnhancerTest {
 		TagTO tag3 = new TagTO("comer", LanguageDetector.ISO_639_SPANISH,
 				LuceneEnhancer.provider,suggest.getResource());
 		tag3.setValue(2.0);
-		TagTO tag4 = new TagTO("uno", LanguageDetector.ISO_639_SPANISH,
+		TagTO tag4 = new TagTO("bueno", LanguageDetector.ISO_639_SPANISH,
 				LuceneEnhancer.provider,suggest.getResource());
 		tag4.setValue(2.0);
 		
@@ -211,12 +211,12 @@ public class OpenNLPEnhancerTest {
 		suggest.setTags(tags);
 		
 		openNLPEnhancer.openNlpAnalyzer = new SpanishOpenNLPAnalyzer(openNLPEnhancer.configuration);
-		openNLPEnhancer.processSetence(new String[]{"PN","NC","VS","Z"}, new String[]{"eso","perro","comer","uno"});
+		openNLPEnhancer.processSetence(new String[]{"PN","NC","VS","AQ"}, new String[]{"eso","perro","comer","bueno"});
 		
 		assertEquals(openNLPEnhancer.tags.get("eso"),null);
 		assertTrue(openNLPEnhancer.nouns.contains("perro"));
 		assertTrue(openNLPEnhancer.verbs.contains("comer"));
-		assertTrue(openNLPEnhancer.numbers.contains("uno"));
+		assertTrue(openNLPEnhancer.adjectives.contains("bueno"));
 	}
 	
 	@Test 
@@ -345,7 +345,7 @@ public class OpenNLPEnhancerTest {
 		SuggestionTO suggest = initializeSuggest();
 		
 		Map<String, TagTO> tags = new HashMap<String, TagTO>();
-		TagTO tag = new TagTO("uno", LanguageDetector.ISO_639_SPANISH,
+		TagTO tag = new TagTO("bueno", LanguageDetector.ISO_639_SPANISH,
 				LuceneEnhancer.provider, suggest.getResource());
 		tag.setValue(1.0);
 		tags.put(tag.getLabel(), tag);
@@ -353,9 +353,9 @@ public class OpenNLPEnhancerTest {
 		openNLPEnhancer.tags = tags;
 		openNLPEnhancer.suggest = suggest;
 		
-		openNLPEnhancer.findAndChangeNumbers();
+		openNLPEnhancer.findAndChangeAdjectives();
 		
-		assertEquals(1d, openNLPEnhancer.tags.get("uno").getValue(), 1e-15d);
+		assertEquals(1d, openNLPEnhancer.tags.get("bueno").getValue(), 1e-15d);
 	}
 	
 	@Test
@@ -363,7 +363,7 @@ public class OpenNLPEnhancerTest {
 		SuggestionTO suggest = initializeSuggest();
 		
 		Map<String, TagTO> tags = new HashMap<String, TagTO>();
-		TagTO tag = new TagTO("uno", LanguageDetector.ISO_639_SPANISH,
+		TagTO tag = new TagTO("bueno", LanguageDetector.ISO_639_SPANISH,
 				LuceneEnhancer.provider,suggest.getResource());
 		tag.setValue(1.0);
 		tags.put(tag.getLabel(), tag);
@@ -371,12 +371,12 @@ public class OpenNLPEnhancerTest {
 		openNLPEnhancer.tags = tags;
 		openNLPEnhancer.suggest = suggest;
 		
-		openNLPEnhancer.numbers = new HashSet<String>();
-		openNLPEnhancer.numbers.add("uno");
+		openNLPEnhancer.adjectives = new HashSet<String>();
+		openNLPEnhancer.adjectives.add("bueno");
 		
-		openNLPEnhancer.findAndChangeNumbers();
+		openNLPEnhancer.findAndChangeAdjectives();
 		
-		assertEquals(0d, openNLPEnhancer.tags.get("uno").getValue(), 1e-15d);
+		assertEquals(0d, openNLPEnhancer.tags.get("bueno").getValue(), 1e-15d);
 	}
 	
 	private SuggestionTO initializeSuggest() throws Exception {

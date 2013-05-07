@@ -36,7 +36,7 @@ public class OpenNLPEnhancer extends EnhancerAdapter implements Configurable {
 
 	protected Set<String> nouns;
 	protected Set<String> verbs;
-	protected Set<String> numbers;
+	protected Set<String> adjectives;
 	
 	protected EnglishOpenNLPAnalyzer englishOpenNlpAnalyzer;
 	protected SpanishOpenNLPAnalyzer spanishOpenNlpAnalyzer;
@@ -58,7 +58,7 @@ public class OpenNLPEnhancer extends EnhancerAdapter implements Configurable {
 		
 		this.nouns = new HashSet<String>();
 		this.verbs = new HashSet<String>();
-		this.numbers = new HashSet<String>();
+		this.adjectives = new HashSet<String>();
 		
 		loadConfiguration(configuration);
 	}
@@ -76,7 +76,7 @@ public class OpenNLPEnhancer extends EnhancerAdapter implements Configurable {
 		
 		this.nouns = new HashSet<String>();
 		this.verbs = new HashSet<String>();
-		this.numbers = new HashSet<String>();
+		this.adjectives = new HashSet<String>();
 		
 		loadConfiguration(configuration);
 	}
@@ -108,7 +108,7 @@ public class OpenNLPEnhancer extends EnhancerAdapter implements Configurable {
 		
 		nouns.clear();
 		verbs.clear();
-		numbers.clear();
+		adjectives.clear();
 	}
 	
 	@Override
@@ -163,7 +163,7 @@ public class OpenNLPEnhancer extends EnhancerAdapter implements Configurable {
 
 		findAndChangeNouns();
 		findAndChangeVerbs();
-		findAndChangeNumbers();
+		findAndChangeAdjectives();
 	}
 
 	/**
@@ -180,8 +180,8 @@ public class OpenNLPEnhancer extends EnhancerAdapter implements Configurable {
 				nouns.add(tokenizedText[i].toLowerCase());
 			} else if (openNlpAnalyzer.isVerb(tags[i])) {
 				verbs.add(tokenizedText[i].toLowerCase());
-			} else if (openNlpAnalyzer.isNumber(tags[i])) {
-				numbers.add(tokenizedText[i].toLowerCase());
+			} else if (openNlpAnalyzer.isAdjective(tags[i])) {
+				adjectives.add(tokenizedText[i].toLowerCase());
 			}
 		}
 	}
@@ -237,12 +237,12 @@ public class OpenNLPEnhancer extends EnhancerAdapter implements Configurable {
 	}
 
 	/**
-	 * Modifies Numbers' weight. Subtracts the maximum weight.
+	 * Modifies Adjectives' weight. Subtracts the maximum weight.
 	 */
-	protected void findAndChangeNumbers() {
+	protected void findAndChangeAdjectives() {
 		double value = calculateMaxValue();
 		for (Entry<String, TagTO> label : tags.entrySet()) {
-			if (numbers.contains(label.getKey())) {
+			if (adjectives.contains(label.getKey())) {
 				label.getValue().subValue(value);
 			}
 		}

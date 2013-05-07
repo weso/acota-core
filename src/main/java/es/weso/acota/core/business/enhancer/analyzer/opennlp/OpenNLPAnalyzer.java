@@ -50,13 +50,13 @@ public interface OpenNLPAnalyzer extends Configurable{
 	boolean isNoun(String tag) throws AcotaConfigurationException;
 	
 	/**
-	 * Checks whether the supplied tag is a number tag
+	 * Checks whether the supplied tag is an adjective tag
 	 * @param tag OpenNLP Tag to check
-	 * @return true If the supplied tag is a number tag,
-	 * false If the supplied tag is not a number tag
+	 * @return true If the supplied tag is an adjective tag,
+	 * false If the supplied tag is not an adjective tag
 	 * @throws AcotaConfigurationException Any exception that occurs
 	 */
-	boolean isNumber(String tag) throws AcotaConfigurationException;
+	boolean isAdjective(String tag) throws AcotaConfigurationException;
 	
 	/**
 	 * Checks whether the supplied tag is a verb tag

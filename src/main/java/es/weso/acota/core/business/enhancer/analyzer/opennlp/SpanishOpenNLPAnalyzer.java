@@ -38,7 +38,7 @@ public class SpanishOpenNLPAnalyzer extends OpenNLPAnalyzerAdapter implements
 		setOpenNlpTokens(configuration.getOpenNlpEsTokens());
 		setOpenNlpNouns(configuration.getOpenNlpEsNouns());
 		setOpenNlpVerbs(configuration.getOpenNlpEsVerbs());
-		setOpenNlpNumbers(configuration.getOpenNlpEsNumbers());
+		setOpenNlpAdjectives(configuration.getOpenNlpEsAdjectives());
 	}
 
 	/**
