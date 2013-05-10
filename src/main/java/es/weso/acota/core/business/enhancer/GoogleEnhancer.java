@@ -93,7 +93,7 @@ public class GoogleEnhancer extends EnhancerAdapter implements Configurable {
 		List<Entry<String, TagTO>> sortedTags = 
 				AcotaUtil.sortTags(AcotaUtil.backupTags(tags));
 		
-		long percentileLimit = Math.round(sortedTags.size() * (googlePercentile/100d));
+		long percentileLimit = Math.round(sortedTags.size() * ((double)googlePercentile/100));
 		long currentLimit = googleLimit < percentileLimit ? googleLimit : percentileLimit;
 		
 		for (int i = 0; i < currentLimit; i++) {
@@ -118,8 +118,10 @@ public class GoogleEnhancer extends EnhancerAdapter implements Configurable {
 			throws AcotaConfigurationException, IOException, AcotaRESTException,
 			UnsupportedEncodingException, AcotaDocumentBuilderException,
 			TransformerException {
-		String label = sortedTags.get(i).getKey();
-		String language = languageDetector.detect(label);
+		TagTO tag = sortedTags.get(i).getValue();
+		String label = tag.getLabel();
+		String language = tag.getLang();
+				languageDetector.detect(label);
 		String result = restClient.execute(generateURL(label, language), 
 				MemcachedRESTClient.APPLICATION_XML, googleEncoding);
 		Document document = processResponse(result);
@@ -139,7 +141,7 @@ public class GoogleEnhancer extends EnhancerAdapter implements Configurable {
 			throws UnsupportedEncodingException, AcotaConfigurationException {
 		StringBuilder url = new StringBuilder(googleUrl)
 			.append(URLEncoder.encode(label, "utf8"));
-		if(language.equals(LanguageDetector.ISO_639_UNDEFINED)){
+		if(!language.equals(LanguageDetector.ISO_639_UNDEFINED)){
 			url.append("&hl=").append(languageDetector.detect(label));
 		}
 		return url.toString();
@@ -174,13 +176,15 @@ public class GoogleEnhancer extends EnhancerAdapter implements Configurable {
 	 * @param language Language of the document
 	 * @throws TransformerException If happens an exceptional condition that
 	 * occurred during the transformation process.
+	 * @throws AcotaConfigurationException 
 	 */
-	protected void processDocument(Document result, String language) throws TransformerException {
+	protected void processDocument(Document result, String language) throws TransformerException, AcotaConfigurationException {
 		NodeIterator it = XPathAPI.selectNodeIterator(result, "//suggestion/@data");
 		Node node = null;
-
+		String value = null;
 		while ((node = it.nextNode()) != null) {
-			TagTO tag = new TagTO(node.getNodeValue().trim(), language, provider,
+			value = node.getNodeValue().trim();
+			TagTO tag = new TagTO(value, languageDetector.detect(value), provider,
 					request.getResource());
 			fillSuggestions(tag, googleRelevance);
 		}

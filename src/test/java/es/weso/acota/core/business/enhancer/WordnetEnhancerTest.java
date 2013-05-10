@@ -1,6 +1,7 @@
 package es.weso.acota.core.business.enhancer;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -85,7 +86,7 @@ public class WordnetEnhancerTest {
 		SuggestionTO suggest = initializeSuggest();
 		
 		Map<String, TagTO> tags = new HashMap<String, TagTO>();
-		TagTO tag = new TagTO("open", LanguageDetector.ISO_639_SPANISH,
+		TagTO tag = new TagTO("open", LanguageDetector.ISO_639_ENGLISH,
 				LuceneEnhancer.provider, suggest.getResource());
 		tag.setValue(4.0);
 		tags.put(tag.getLabel(), tag);
@@ -106,6 +107,34 @@ public class WordnetEnhancerTest {
 		
 		wordnetEnhancer.enhance(request);
 		assertEquals(3d, suggestion.getTags().get("clear").getValue(), 1e-15d);
+	}
+	
+	@Test
+	public void enhanceNonEnglishTest() throws Exception{
+		SuggestionTO suggest = initializeSuggest();
+		
+		Map<String, TagTO> tags = new HashMap<String, TagTO>();
+		TagTO tag = new TagTO("abierto", LanguageDetector.ISO_639_SPANISH,
+				LuceneEnhancer.provider, suggest.getResource());
+		tag.setValue(4.0);
+		tags.put(tag.getLabel(), tag);
+		
+		wordnetEnhancer.tags = tags;
+		wordnetEnhancer.suggest = suggest;
+		
+		ResourceTO resource = new ResourceTO();
+		resource.setDescription("Abierto");
+		resource.setDescription("");
+		
+		SuggestionTO suggestion = new SuggestionTO();
+		suggestion.setTags(tags);
+		
+		RequestSuggestionTO request = mock(RequestSuggestionTO.class);
+		when(request.getResource()).thenReturn(resource);
+		when(request.getSuggestions()).thenReturn(suggestion);
+		
+		wordnetEnhancer.enhance(request);
+		assertEquals(4.0, suggestion.getTags().get("abierto").getValue(),1e-15d);
 	}
 	
 	private SuggestionTO initializeSuggest() throws Exception {

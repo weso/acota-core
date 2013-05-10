@@ -113,8 +113,8 @@ public class OpenNLPEnhancer extends EnhancerAdapter implements Configurable {
 	
 	@Override
 	protected void execute() throws Exception {
-		analyseLabelTerms();
 		analyseDescriptionTerms();
+		analyseLabelTerms();
 	}
 
 	@Override
@@ -156,14 +156,13 @@ public class OpenNLPEnhancer extends EnhancerAdapter implements Configurable {
 		this.openNlpAnalyzer = loadAnalyzer(text);
 
 		String sentences[] = openNlpAnalyzer.sentDetect(text);
+		String[] textTokenized = null;
 		for (String sentence : sentences) {
-			String[] textTokenized = openNlpAnalyzer.tokenize(sentence);
+			textTokenized = openNlpAnalyzer.tokenize(sentence);
 			processSetence(openNlpAnalyzer.tag(textTokenized), textTokenized);
 		}
 
-		findAndChangeNouns();
-		findAndChangeVerbs();
-		findAndChangeAdjectives();
+		alterTags();
 	}
 
 	/**
@@ -173,7 +172,7 @@ public class OpenNLPEnhancer extends EnhancerAdapter implements Configurable {
 	 * @throws AcotaConfigurationException 
 	 */
 	protected void processSetence(String[] tags, String[] tokenizedText) throws AcotaConfigurationException {
-		for (int i = 0; i < tokenizedText.length; i++) {
+		for(int i = tokenizedText.length -1; i >=0; i--){
 			if (openNlpAnalyzer.isDispenasble(tags[i])) {
 				findAndRemove(tokenizedText[i]);
 			} else if (openNlpAnalyzer.isNoun(tags[i])) {
@@ -186,6 +185,25 @@ public class OpenNLPEnhancer extends EnhancerAdapter implements Configurable {
 		}
 	}
 
+
+	/**
+	 * Alter noun tags, verb tags and adjective tags 
+	 */
+	protected void alterTags() {
+		String label = null;
+		double maxValue = calculateMaxValue();
+		for (Entry<String, TagTO> entry : tags.entrySet()) {
+			label = entry.getKey().toLowerCase();
+			if (nouns.contains(label)) {
+				alterNounTag(entry.getValue(),maxValue);
+			}else if(adjectives.contains(label)){
+				alterAdjectiveTag(entry.getValue(),maxValue);
+			}else if(verbs.contains(label)){
+				alterVerbTag(entry.getValue(),maxValue);
+			}
+		}
+	}
+	
 	/**
 	 * Calculates the maximum value of the tags Map
 	 * @return The maximum value of the tags Map
@@ -212,40 +230,29 @@ public class OpenNLPEnhancer extends EnhancerAdapter implements Configurable {
 
 	/**
 	 * Modifies Nouns' weight. Adds the half of the maximum weight.
+	 * @param label Noun tag to alter
+	 * @param maxValue Current MaxValue of the set tags
 	 */
-	protected void findAndChangeNouns() {
-		double sum = calculateMaxValue() / 2;
-
-		for (Entry<String, TagTO> label : tags.entrySet()) {
-			if (nouns.contains(label.getKey())) {
-				label.getValue().addValue(sum);
-			}
-		}
+	protected void alterNounTag(TagTO label, double maxValue) {
+		label.addValue(maxValue);
 	}
 
 	/**
 	 * Modifies Verbs' weight. Subtracts the half of the maximum weight.
+	 * @param label Verb tag to alter
+	 * @param maxValue Current MaxValue of the set tags
 	 */
-	protected void findAndChangeVerbs() {
-		double sum = calculateMaxValue() / 2;
-
-		for (Entry<String, TagTO> label : tags.entrySet()) {
-			if (verbs.contains(label.getKey())) {
-				label.getValue().subValue(sum);
-			}
-		}
+	protected void alterVerbTag(TagTO label, double maxValue) {
+		label.addValue(maxValue / 2);
 	}
 
 	/**
 	 * Modifies Adjectives' weight. Subtracts the maximum weight.
+	 * @param label Adjective tag to alter
+	 * @param maxValue Current MaxValue of the set tags
 	 */
-	protected void findAndChangeAdjectives() {
-		double value = calculateMaxValue();
-		for (Entry<String, TagTO> label : tags.entrySet()) {
-			if (adjectives.contains(label.getKey())) {
-				label.getValue().subValue(value);
-			}
-		}
+	protected void alterAdjectiveTag(TagTO label, double maxValue) {
+		label.addValue(maxValue);
 	}
 	
 	/**

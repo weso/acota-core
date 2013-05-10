@@ -2,7 +2,6 @@ package es.weso.acota.core.business.enhancer;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -18,6 +17,8 @@ import es.weso.acota.core.CoreConfiguration;
 import es.weso.acota.core.entity.ProviderTO;
 import es.weso.acota.core.entity.TagTO;
 import es.weso.acota.core.exceptions.AcotaConfigurationException;
+import es.weso.acota.core.utils.AcotaUtil;
+import es.weso.acota.core.utils.lang.LanguageDetector;
 
 /**
  * WordnetEnhancer is an {@link Enhancer} specialized in increasing the weight 
@@ -78,8 +79,8 @@ public class WordnetEnhancer extends EnhancerAdapter implements Configurable {
 		if(dictionary!=null && dictionary.isOpen()){
 			dictionary.close();		
 		}
-		URL url = new URL ("file", null, wordnetEnDict) ;
-		this.dictionary = new Dictionary ( url ) ;
+		URL url = new URL ("file", null, wordnetEnDict);
+		this.dictionary = new Dictionary ( url );
 		dictionary.open();	
 	}
 
@@ -88,12 +89,10 @@ public class WordnetEnhancer extends EnhancerAdapter implements Configurable {
 		if(wordnetEnDictModified){
 			loadWordnetDict();
 		}
-		Set<Entry<String, TagTO>> backupSet = new HashSet<Entry<String, TagTO>>();
-		for (Entry<String, TagTO> label : tags.entrySet()) {
-			backupSet.add(label);
-		}
-		for (Entry<String, TagTO> label : backupSet) {
-			findSynonims(label.getKey());
+		Set<Entry<String, TagTO>> shallowCoppy = AcotaUtil.backupTags(tags).entrySet();
+		for (Entry<String, TagTO> label : shallowCoppy) {
+			if(label.getValue().getLang().equals(LanguageDetector.ISO_639_ENGLISH))
+				findSynonims(label.getKey());
 		}
 	}
 
@@ -118,7 +117,7 @@ public class WordnetEnhancer extends EnhancerAdapter implements Configurable {
 	 * @param label Label founded
 	 */
 	protected void findSynonims(String label){
-		IIndexWord idxWord = dictionary.getIndexWord (label , POS . NOUN ) ;
+		IIndexWord idxWord = dictionary.getIndexWord (label , POS . NOUN );
 		if(idxWord!=null){
 			IWordID wordID = idxWord.getWordIDs () . get (0) ;
 			IWord word = dictionary.getWord ( wordID ) ;
@@ -128,8 +127,10 @@ public class WordnetEnhancer extends EnhancerAdapter implements Configurable {
 				cleanWord = w.getLemma().replace('_', ' ').toLowerCase();
 				if(!cleanWord.equals(label)){
 					TagTO tag = tags.get(cleanWord);
-					if(tag == null)
-						tag = new TagTO(cleanWord, "en", provider, suggest.getResource());
+					if(tag == null){
+						tag = new TagTO(cleanWord, LanguageDetector.ISO_639_ENGLISH, 
+								provider, suggest.getResource());
+					}
 					fillSuggestions(tag, wordnetRelevance);
 				}
 			}

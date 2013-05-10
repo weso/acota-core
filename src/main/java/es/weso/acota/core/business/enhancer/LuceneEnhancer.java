@@ -71,8 +71,10 @@ public class LuceneEnhancer extends EnhancerAdapter implements Configurable {
 		if(configuration==null)
 			configuration = new CoreConfiguration();
 		this.configuration = configuration;
+		
 		this.luceneLabelRelevance = configuration.getLuceneLabelRelevance();
 		this.luceneTermRelevance = configuration.getLuceneTermRelevance();
+		
 		this.languageDetector = LanguageDetector.getInstance(configuration);
 	}
 	
@@ -137,9 +139,10 @@ public class LuceneEnhancer extends EnhancerAdapter implements Configurable {
 		CharTermAttribute termAttribute = stream
 				.getAttribute(CharTermAttribute.class);
 
+		TagTO tag = null;
+		logger.debug("Add tag to suggestions");
 		while (stream.incrementToken()) {
-			logger.debug("Add tag to suggestions");
-			TagTO tag = createTag(termAttribute, language);
+			tag = createTag(termAttribute, language);
 			fillSuggestions(tag, relevance);
 		}
 	}

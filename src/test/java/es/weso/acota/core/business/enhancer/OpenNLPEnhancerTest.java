@@ -123,7 +123,7 @@ public class OpenNLPEnhancerTest {
 		
 		openNLPEnhancer.enhance(request);
 		
-		assertEquals(6.0d, suggest.getTags().get("prueba").getValue(),1e-15);
+		assertEquals(16.0d, suggest.getTags().get("prueba").getValue(),1e-15);
 	}
 	
 	@Test
@@ -264,7 +264,7 @@ public class OpenNLPEnhancerTest {
 	}
 	
 	@Test
-	public void findAndChangeNounsEmpty() throws Exception{
+	public void alterNounTagsEmpty() throws Exception{
 		SuggestionTO suggest = initializeSuggest();
 		
 		Map<String, TagTO> tags = new HashMap<String, TagTO>();
@@ -276,13 +276,13 @@ public class OpenNLPEnhancerTest {
 		openNLPEnhancer.tags = tags;
 		openNLPEnhancer.suggest = suggest;
 		
-		openNLPEnhancer.findAndChangeNouns();
+		openNLPEnhancer.alterTags();
 		
 		assertEquals(1d, openNLPEnhancer.tags.get("yo").getValue(), 1e-15d);
 	}
 	
 	@Test
-	public void findAndChangeNounsTest() throws Exception{
+	public void alterNounTagsTest() throws Exception{
 		SuggestionTO suggest = initializeSuggest();
 		
 		Map<String, TagTO> tags = new HashMap<String, TagTO>();
@@ -297,12 +297,13 @@ public class OpenNLPEnhancerTest {
 		openNLPEnhancer.nouns = new HashSet<String>();
 		openNLPEnhancer.nouns.add("yo");
 		
-		openNLPEnhancer.findAndChangeNouns();
-		assertEquals(1.5d, openNLPEnhancer.tags.get("yo").getValue(), 1e-15d);
+		openNLPEnhancer.alterTags();
+		
+		assertEquals(2d, openNLPEnhancer.tags.get("yo").getValue(), 1e-15d);
 	}
 	
 	@Test
-	public void findAndChangeVerbsEmpty() throws Exception{
+	public void alterVerbTagsEmpty() throws Exception{
 		SuggestionTO suggest = initializeSuggest();
 		
 		Map<String, TagTO> tags = new HashMap<String, TagTO>();
@@ -314,13 +315,13 @@ public class OpenNLPEnhancerTest {
 		openNLPEnhancer.tags = tags;
 		openNLPEnhancer.suggest = suggest;
 		
-		openNLPEnhancer.findAndChangeVerbs();
+		openNLPEnhancer.alterTags();
 		
 		assertEquals(2d, openNLPEnhancer.tags.get("comer").getValue(), 1e-15d);
 	}
 	
 	@Test
-	public void findAndChangeVerbsTest() throws Exception{
+	public void alterVerbTagsTest() throws Exception{
 		SuggestionTO suggest = initializeSuggest();
 		
 		Map<String, TagTO> tags = new HashMap<String, TagTO>();
@@ -335,13 +336,13 @@ public class OpenNLPEnhancerTest {
 		openNLPEnhancer.verbs = new HashSet<String>();
 		openNLPEnhancer.verbs.add("comer");
 		
-		openNLPEnhancer.findAndChangeVerbs();
+		openNLPEnhancer.alterTags();
 		
-		assertEquals(1d, openNLPEnhancer.tags.get("comer").getValue(), 1e-15d);
+		assertEquals(3d, openNLPEnhancer.tags.get("comer").getValue(), 1e-15d);
 	}
 	
 	@Test
-	public void findAndChangeNumbersEmpty() throws Exception{
+	public void alterAdjectiveTagsEmpty() throws Exception{
 		SuggestionTO suggest = initializeSuggest();
 		
 		Map<String, TagTO> tags = new HashMap<String, TagTO>();
@@ -353,13 +354,13 @@ public class OpenNLPEnhancerTest {
 		openNLPEnhancer.tags = tags;
 		openNLPEnhancer.suggest = suggest;
 		
-		openNLPEnhancer.findAndChangeAdjectives();
+		openNLPEnhancer.alterTags();
 		
 		assertEquals(1d, openNLPEnhancer.tags.get("bueno").getValue(), 1e-15d);
 	}
 	
 	@Test
-	public void findAndChangeNumbersTest() throws Exception{
+	public void alterAdjectivesTagsTest() throws Exception{
 		SuggestionTO suggest = initializeSuggest();
 		
 		Map<String, TagTO> tags = new HashMap<String, TagTO>();
@@ -374,9 +375,9 @@ public class OpenNLPEnhancerTest {
 		openNLPEnhancer.adjectives = new HashSet<String>();
 		openNLPEnhancer.adjectives.add("bueno");
 		
-		openNLPEnhancer.findAndChangeAdjectives();
+		openNLPEnhancer.alterTags();
 		
-		assertEquals(0d, openNLPEnhancer.tags.get("bueno").getValue(), 1e-15d);
+		assertEquals(2d, openNLPEnhancer.tags.get("bueno").getValue(), 1e-15d);
 	}
 	
 	private SuggestionTO initializeSuggest() throws Exception {

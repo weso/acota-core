@@ -45,7 +45,7 @@ public class TokenizerEnhancer extends EnhancerAdapter implements Configurable {
 	protected SpanishTokenizerAnalyzer spanishTokenizerAnalyzer;
 	
 	protected TokenizerAnalyzer currentTokenizerAnalyzer;
-	protected LanguageDetector languageUtil;
+	protected LanguageDetector languageDetector;
 	
 	protected CoreConfiguration configuration;
 
@@ -130,15 +130,18 @@ public class TokenizerEnhancer extends EnhancerAdapter implements Configurable {
 		this.k = configuration.getTokenizerK();
 		this.tokenizerRelevanceLabel = configuration.getTokenizerLabelRelevance();
 		this.tokenizerRelevanceTerm = configuration.getTokenizerTermRelevance();
+		
 		if(spanishTokenizerAnalyzer==null)
 			this.spanishTokenizerAnalyzer = new SpanishTokenizerAnalyzer(configuration);
 		else
 			spanishTokenizerAnalyzer.loadConfiguration(configuration);
+		
 		if(englishTokenizerAnalyzer==null)
 			this.englishTokenizerAnalyzer = new EnglishTokenizerAnalyzer(configuration);
 		else
 			this.englishTokenizerAnalyzer.loadConfiguration(configuration);
-		this.languageUtil = LanguageDetector.getInstance(configuration);
+		
+		this.languageDetector = LanguageDetector.getInstance(configuration);
 	}
 
 	/**
@@ -204,7 +207,7 @@ public class TokenizerEnhancer extends EnhancerAdapter implements Configurable {
 	 */
 	protected void extractTerms(String title, String text, double relevance)
 			throws IOException, AcotaConfigurationException {
-		String language = languageUtil.detect(text);
+		String language = languageDetector.detect(text);
 		this.currentTokenizerAnalyzer = loadAnalyzer(language);
 		
 		String[] sentences = currentTokenizerAnalyzer.sentDetect(text);
@@ -265,8 +268,7 @@ public class TokenizerEnhancer extends EnhancerAdapter implements Configurable {
 	protected void addString(String[] label, double relevance) {
 		StringArrayWrapper stringArrayWraper = new StringArrayWrapper(label);
 		Double value = auxiliar.get(stringArrayWraper);
-		if (value == null)
-			value = 0d;
+		value = value != null ? value : 0;
 		value += relevance;
 		auxiliar.put(stringArrayWraper, value);
 	}
@@ -299,7 +301,7 @@ public class TokenizerEnhancer extends EnhancerAdapter implements Configurable {
 			String label = StringUtils.join(
 					Arrays.copyOfRange(tokenizedText, min, max + 1), " ");
 			TagTO tag = new TagTO(label,
-					languageUtil.detect(label),
+					languageDetector.detect(label),
 					provider, request.getResource());
 			fillSuggestions(tag, relevance);
 		}
